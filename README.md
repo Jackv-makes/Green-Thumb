@@ -95,26 +95,6 @@ Full explanation: [docs/how-it-works.md](docs/how-it-works.md).
 
 Solder the flex's four pads — **GRN_SGNL**, **BLU_SGNL**, **BTN** and **GND** — to their matching points on the LED board. Nothing else on the device is modified. See [docs/install.md](docs/install.md), then [docs/testing.md](docs/testing.md) to check it.
 
-## Repository layout
-
-```
-green-thumb/
-├── README.md
-├── LICENSE.md               Green Thumb Hardware License
-├── CHANGELOG.md
-├── CONTRIBUTING.md
-├── hardware/
-│   └── README.md            pad list and LED-board notes
-├── docs/
-│   ├── how-it-works.md
-│   ├── white-loop.md
-│   ├── mod-comparison.md
-│   ├── install.md
-│   ├── testing.md
-│   └── faq.md
-└── images/
-```
-
 ## Support
 
 If Green Thumb saved you some button presses, you can buy me a coffee:
