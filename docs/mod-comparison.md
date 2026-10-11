@@ -7,7 +7,7 @@ Two failure modes matter on this device:
 - **Long-press modes.** Holding the button for seconds cycles through modes and can power the device down. Any mod that holds the button for as long as green is lit risks this.
 - **The white-light loop.** White contains green; a mod that only watches green presses on every white blink, restarting the search indefinitely. See [white-loop.md](white-loop.md).
 
-<p align="center"><img src="../images/timing.svg" width="700"></p>
+<p align="center"><img src="../images/timing.svg" alt="What the button line sees under each mod when green turns on" width="700"></p>
 
 ## 1. Single wire
 

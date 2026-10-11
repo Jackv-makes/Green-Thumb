@@ -10,7 +10,7 @@ Green Thumb taps the **green** base node (GRN_SGNL) to know when to press, and t
 
 ## The circuit
 
-<img src="../images/schematic.svg" width="760">
+<img src="../images/schematic.svg" alt="Green Thumb schematic" width="760">
 
 **Q1 is a digital transistor** — an NPN with its bias resistors in the package, one in series with the base and one from base to emitter. A fraction of a volt on its input turns it on, pulling the button line to ground. With no input, the internal pull-down holds it off; it can't float. It was chosen for a turn-on point below the 0.8 V available.
 
@@ -40,7 +40,7 @@ Green and blue switch on within microseconds of each other during white. If gree
 
 The press usually lands within the first PWM cycles of a fade-in, before the die is visibly lit.
 
-<img src="../images/white-loop.svg" width="760">
+<img src="../images/white-loop.svg" alt="The white-light loop: a green-only mod versus Green Thumb" width="760">
 
 ## What it doesn't affect
 

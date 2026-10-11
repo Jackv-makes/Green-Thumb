@@ -1,21 +1,25 @@
-<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 760 300" width="760" height="300" font-family="Helvetica, Arial, sans-serif">
-<rect width="760" height="300" fill="#ffffff"/>
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 760 400" width="760" height="400" font-family="Helvetica, Arial, sans-serif">
+<rect width="760" height="400" fill="#ffffff"/>
 <text x="380" y="28" text-anchor="middle" font-size="18" font-weight="bold" fill="#222">What the button line sees when green turns on</text>
-<!-- Green signal -->
-<text x="20" y="80" font-size="13" fill="#1D9E75">GRN_SGNL</text>
-<polyline points="90,95 220,95 220,60 520,60 520,95 700,95" fill="none" stroke="#1D9E75" stroke-width="3"/>
-<text x="370" y="52" text-anchor="middle" font-size="11" fill="#1D9E75">LED on (any duration)</text>
+<text x="380" y="44" text-anchor="middle" font-size="11" fill="#666">Button line: high = released, low = pressed</text>
+<!-- GRN_SGNL -->
+<text x="20" y="92" font-size="13" fill="#1D9E75">GRN_SGNL</text>
+<polyline points="150,104 260,104 260,76 560,76 560,104 740,104" fill="none" stroke="#1D9E75" stroke-width="3"/>
+<text x="410" y="68" text-anchor="middle" font-size="11" fill="#1D9E75">green on (any duration)</text>
 <!-- Green Thumb -->
-<text x="20" y="150" font-size="13" fill="#222">Green Thumb</text>
-<polyline points="90,135 220,135 220,165 262,165 262,135 700,135" fill="none" stroke="#222" stroke-width="3"/>
-<text x="241" y="185" text-anchor="middle" font-size="11" fill="#222">~100 ms tap</text>
-<!-- Opto mod -->
-<text x="20" y="220" font-size="13" fill="#888">Opto-relay mod</text>
-<polyline points="90,205 220,205 220,235 520,235 520,205 700,205" fill="none" stroke="#888" stroke-width="3"/>
-<text x="370" y="196" text-anchor="middle" font-size="11" fill="#888">held the whole time (can trigger long-press modes)</text>
+<text x="20" y="158" font-size="13" font-weight="bold" fill="#222">Green Thumb</text>
+<polyline points="150,140 260,140 260,170 302,170 302,140 740,140" fill="none" stroke="#222" stroke-width="3"/>
+<text x="312" y="166" font-size="11" fill="#222">~100 ms tap, then released</text>
+<!-- Hold-type mods -->
+<text x="20" y="222" font-size="13" fill="#888">Opto-relay /</text>
+<text x="20" y="238" font-size="13" fill="#888">MOSFET mods</text>
+<polyline points="150,210 260,210 260,240 560,240 560,210 740,210" fill="none" stroke="#888" stroke-width="3"/>
+<text x="410" y="230" text-anchor="middle" font-size="11" fill="#888">held the whole time (can trigger long-press modes)</text>
 <!-- Single wire -->
-<text x="20" y="282" font-size="13" fill="#C62828">Single-wire mod</text>
-<polyline points="90,290 220,290 220,262 520,262 520,290 700,290" fill="none" stroke="#C62828" stroke-width="3"/>
-<text x="370" y="252" text-anchor="middle" font-size="11" fill="#C62828">released only while LED is on — pressed the rest of the time (inverted)</text>
-<text x="600" y="125" font-size="10" fill="#666">high = released, low = pressed</text>
+<text x="20" y="300" font-size="13" fill="#C62828">Single-wire mod</text>
+<polyline points="150,310 260,310 260,280 560,280 560,310 740,310" fill="none" stroke="#C62828" stroke-width="3"/>
+<text x="410" y="328" text-anchor="middle" font-size="11" fill="#C62828">released only while green is on, pressed the rest of the time (inverted)</text>
+<!-- notes -->
+<text x="20" y="364" font-size="11" fill="#666">Shown for green alone. When blue is also on (white, cyan), Green Thumb doesn't press at all — see the white-light loop.</text>
+<text x="20" y="382" font-size="11" fill="#666">Vibration-gated mods press only while green and the vibration motor are both on, so their press lasts as long as the vibration burst.</text>
 </svg>

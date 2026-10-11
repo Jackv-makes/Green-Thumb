@@ -45,7 +45,11 @@
 <line x1="200" y1="280" x2="430" y2="280" stroke="#1D9E75" stroke-width="2.5"/>
 <text x="440" y="275" font-size="12" fill="#222">GRN_SGNL → C1 → R2 → Q1 IN</text>
 <text x="440" y="300" font-size="12" fill="#222">R1 to GND</text>
-<text x="440" y="250" font-size="12" fill="#378ADD">BLU_SGNL → Q2 clamps Q1 IN</text>
+<text x="440" y="230" font-size="12" fill="#378ADD">BLU_SGNL → Q2 clamps Q1 IN</text>
+<circle cx="200" cy="226" r="5" fill="#378ADD"/>
+<line x1="200" y1="226" x2="430" y2="226" stroke="#378ADD" stroke-width="2.5"/>
+<text x="210" y="241" font-size="12" fill="#378ADD">blue control pad</text>
+<text x="210" y="254" font-size="11" fill="#666">(blue driver base, same circuit)</text>
 <text x="440" y="330" font-size="12" fill="#222">Q1 GND → GND</text>
 <line x1="265" y1="165" x2="265" y2="200" stroke="#1D9E75" stroke-width="2.5"/>
 <line x1="265" y1="200" x2="430" y2="200" stroke="#1D9E75" stroke-width="2.5"/>

@@ -2,7 +2,6 @@
 
 Tools: fine-tip soldering iron, flux, fine wire, a multimeter with DC volts and continuity, a magnifier. This covers fitting an assembled Green Thumb to the device.
 
-<p align="center"><img src="../images/led-board-and-main-board.jpg" width="640"></p>
 
 ## 1. Confirm the device behaves the way Green Thumb expects
 
@@ -21,7 +20,7 @@ If a tap doesn't do what you want, stop — Green Thumb won't help on this devic
 
 On the reference board the two pads are next to each other on the Side B edge — blue on the left, green on the right as you look at Side B:
 
-<p align="center"><img src="../images/side-b-control-pads.jpg" width="520"></p>
+<p align="center"><img src="../images/side-b-control-pads.jpg" alt="Side B of the LED board with the blue (B) and green (G) control pads marked" width="520"></p>
 
 **Required check: in the pure-green state, the blue pad must read 0 V.** If it reads more than ~0.3 V, the device mixes blue into its green, and the inhibit would block every press.
 
@@ -29,11 +28,11 @@ On the reference board the two pads are next to each other on the Side B edge �
 
 **Ground.** Any pad that reads 0 V with the device on and beeps to the ribbon connector's ground pin or the u.FL shield when it's off. **Don't use the antenna feed pads** — the two pads where the white coax lands. One is the RF signal; the other, though ground, is part of the antenna tuning.
 
-<p align="center"><img src="../images/led-board-side-a.jpg" width="420"></p>
+<p align="center"><img src="../images/antenna-feed-not-ground.jpg" alt="The antenna feed pad on the LED board, marked as not a ground pad" width="420"></p>
 
 ## 3. Connect the flex
 
-<p align="center"><img src="../images/green-thumb-flex.jpg" width="360"></p>
+<!-- TODO: photo of Green Thumb installed, pads labelled GRN_SGNL / BLU_SGNL / BTN / GND -->
 
 | Flex pad | Wire to |
 |---|---|

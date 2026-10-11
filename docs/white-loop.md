@@ -12,7 +12,7 @@ Pressing the button while disconnected starts a search. The stock behaviour is *
 
 White is red + green + blue. During each white blink, the green channel's driver is switched on exactly as it is for a real green — same control line, same voltage, same timing. A mod that only watches green can't tell the difference, so it presses the button on every white blink. Each press restarts the search, which produces more white blinks, which produce more presses.
 
-<p align="center"><img src="../images/white-loop.svg" width="760"></p>
+<p align="center"><img src="../images/white-loop.svg" alt="The white-light loop: a green-only mod versus Green Thumb" width="760"></p>
 
 ## How it was confirmed
 

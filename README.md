@@ -2,9 +2,9 @@
 
 **A tiny flex PCB that presses a device's button for you when its green LED comes on — as a short tap, not a hold — and ignores white.**
 
-<p align="center">
-  <img src="images/green-thumb-flex.jpg" alt="Green Thumb flex PCB installed on the LED board" width="420">
-</p>
+<!-- TODO: add a photo of Green Thumb installed on the LED board, e.g.
+<p align="center"><img src="images/green-thumb-installed.jpg" alt="Green Thumb installed on the LED board" width="420"></p>
+-->
 
 Green Thumb watches the control lines of the green and blue channels on the device's RGB LED board. When green turns on by itself, it pulls the button line to ground for about 100 ms. The device sees an ordinary button tap. When blue is on as well — white, cyan — it does nothing. The rest of the time the circuit is electrically invisible.
 
@@ -113,7 +113,7 @@ green-thumb/
 ├── CHANGELOG.md
 ├── CONTRIBUTING.md
 ├── hardware/
-│   └── reference/           1:1 outline of the LED board the flex sits on
+│   └── README.md            pad list and LED-board notes
 ├── docs/
 │   ├── how-it-works.md
 │   ├── white-loop.md

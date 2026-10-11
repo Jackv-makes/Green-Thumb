@@ -9,7 +9,7 @@
 <text x="12" y="132" font-size="10" fill="#666"> </text>
 <text x="12" y="182" font-size="11" fill="#222">BTN,</text><text x="12" y="196" font-size="11" fill="#222">green-only mod</text>
 <polyline points="110,181 140,181 140,205 150,205 150,181 208,181 208,205 218,205 218,181 276,181 276,205 286,205 286,181 344,181 344,205 354,205 354,181 412,181 412,205 422,205 422,181 480,181 480,205 490,205 490,181 548,181 548,205 558,205 558,181 616,181 616,205 626,205 626,181 684,181 684,205 694,205 694,181 760,181" fill="none" stroke="#C62828" stroke-width="3"/>
-<text x="440" y="226" text-anchor="middle" font-size="11" fill="#C62828">a tap on every blink → the search restarts → blinks never reach nine</text>
+<text x="440" y="226" text-anchor="middle" font-size="11" fill="#C62828">a press on every blink → the search restarts → blinks never reach nine</text>
 <text x="12" y="252" font-size="11" fill="#222">BTN,</text><text x="12" y="266" font-size="11" fill="#222">Green Thumb</text>
 <polyline points="110,258 760,258" fill="none" stroke="#1D9E75" stroke-width="3"/>
 <text x="440" y="282" text-anchor="middle" font-size="11" fill="#1D9E75">blue is on with every green edge → Q2 blocks the tap → nine blinks and stop</text>

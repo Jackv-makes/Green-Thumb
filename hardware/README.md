@@ -2,9 +2,8 @@
 
 The Green Thumb design files, bill of materials and assembly details are not published; see `LICENSE.md`.
 
-What is here is reference material about the **device's** LED board, useful for installation and for anyone documenting a different device:
+Notes about the **device's** LED board, useful for installation and for anyone documenting a different device:
 
-- `reference/PMC-WN-SUB-01-DK_SideA_mm.svg` and `_SideB_mm.svg` — 1:1 (mm) outline of the LED board, traced from photos and corrected to caliper measurements (48.35 × 49.2 mm across flats, 45° chamfers with 14.35 mm legs, three Ø4.5 mm holes on an R11.3 bolt circle). Accuracy ±0.5 mm.
 - The LED board's ribbon connector is a Molex 503566-1102 (0.3 mm, 11 circuits, bottom contact); the mating Molex cable is the 15031-04xx series. Noted for identification only — Green Thumb doesn't touch the ribbon.
 
 ## Flex pads
