@@ -2,6 +2,8 @@
 
 **A tiny flex PCB that presses a device's button for you when its green LED comes on — as a short tap, not a hold — and ignores white.**
 
+[![Support me on Ko-fi](https://ko-fi.com/img/githubbutton_sm.svg)](https://ko-fi.com/jackvmakes)
+
 <!-- TODO: add a photo of Green Thumb installed on the LED board, e.g.
 <p align="center"><img src="images/green-thumb-installed.jpg" alt="Green Thumb installed on the LED board" width="420"></p>
 -->
@@ -21,6 +23,7 @@ It exists because the popular ways of doing this either *hold* the button, which
 - [How it works](#how-it-works)
 - [Installing](#installing)
 - [Repository layout](#repository-layout)
+- [Support](#support)
 - [License](#license)
 - [Disclaimer](#disclaimer)
 
@@ -90,13 +93,7 @@ Full explanation: [docs/how-it-works.md](docs/how-it-works.md).
 
 ## Installing
 
-Short version — the full procedure with measurements is in [docs/install.md](docs/install.md):
-
-1. Find the **green** and **blue** control pads on the LED board. Each is the base node of that channel's driver: ~0.8 V when the colour is lit, 0 V otherwise. On the reference board they sit side by side on the Side B edge, blue on the left.
-2. Check that the **blue pad reads 0 V while the device shows pure green.** If it doesn't, the device mixes blue into its green and the inhibit would block every tap.
-3. Find the **button pad** (~2.8 V idle, 0 V pressed) and a **ground pad** that isn't part of the antenna feed.
-4. Connect GRN_SGNL, BLU_SGNL, BTN and GND.
-5. Test: green state clears on its own; a press while disconnected gives nine white blinks and stops; manual presses behave as stock.
+Solder the flex's four pads — **GRN_SGNL**, **BLU_SGNL**, **BTN** and **GND** — to their matching points on the LED board. Nothing else on the device is modified. See [docs/install.md](docs/install.md), then [docs/testing.md](docs/testing.md) to check it.
 
 ## Repository layout
 
@@ -117,6 +114,12 @@ green-thumb/
 │   └── faq.md
 └── images/
 ```
+
+## Support
+
+If Green Thumb saved you some button presses, you can buy me a coffee:
+
+[![Support me on Ko-fi](https://ko-fi.com/img/githubbutton_sm.svg)](https://ko-fi.com/jackvmakes)
 
 ## License
 
