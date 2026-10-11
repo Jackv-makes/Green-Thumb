@@ -1,4 +1,6 @@
-# The mods that exist, and what each one actually does
+# Switchless mods compared
+
+> **Note:** this list isn't exhaustive. Other mods exist, including ones that use switches; only switchless mods are compared here.
 
 All of these react to the green LED channel. They differ in *where* they sense it, *what* they do to the button line, and whether they can tell green from white.
 

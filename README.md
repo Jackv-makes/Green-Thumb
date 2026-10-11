@@ -61,6 +61,8 @@ On the reference device, the same tap circuit without its blue inhibit made the 
 
 ## How it compares to other mods
 
+> **Note:** this list isn't exhaustive. Other mods exist, including ones that use switches; only switchless mods are compared here.
+
 | | Single wire | Opto-relay | MOSFET + pull-down | MOSFET + blue inhibit | Vibration-gated | **Green Thumb** |
 |---|---|---|---|---|---|---|
 | Button action | inverted hold (pressed while LED is **off**) | hold while green on | hold while green on | hold while green on, not during white | pressed while green **and** motor on | ~100 ms tap on green |
