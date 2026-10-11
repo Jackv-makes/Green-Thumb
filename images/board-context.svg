@@ -1,58 +1,62 @@
-<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 760 420" width="760" height="420" font-family="Helvetica, Arial, sans-serif">
-<rect width="760" height="420" fill="#ffffff"/>
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 760 410" width="760" height="410" font-family="Helvetica, Arial, sans-serif">
+<rect width="760" height="410" fill="#ffffff"/>
 <text x="380" y="28" text-anchor="middle" font-size="18" font-weight="bold" fill="#222">Where Green Thumb taps the LED board</text>
-<!-- board side -->
-<rect x="30" y="50" width="330" height="340" rx="10" fill="#f7f7f7" stroke="#bbb" stroke-width="1.5"/>
+<!-- boxes -->
+<rect x="30" y="50" width="330" height="345" rx="10" fill="#f7f7f7" stroke="#bbb" stroke-width="1.5"/>
 <text x="195" y="74" text-anchor="middle" font-size="13" fill="#666">LED board (green channel; blue is identical)</text>
-<text x="80" y="110" font-size="12" fill="#222">5 V LED rail</text>
-<line x1="80" y1="118" x2="80" y2="140" stroke="#222" stroke-width="2"/>
-<rect x="70" y="140" width="20" height="40" fill="none" stroke="#222" stroke-width="2"/>
-<text x="100" y="165" font-size="11" fill="#666">R (board)</text>
-<line x1="80" y1="180" x2="80" y2="205" stroke="#222" stroke-width="2"/>
-<polygon points="70,205 90,205 80,222" fill="#1D9E75"/>
-<line x1="70" y1="222" x2="90" y2="222" stroke="#1D9E75" stroke-width="2"/>
-<text x="100" y="218" font-size="11" fill="#1D9E75">green die</text>
-<line x1="80" y1="222" x2="80" y2="250" stroke="#222" stroke-width="2"/>
-<!-- NPN low side -->
-<line x1="80" y1="250" x2="80" y2="262" stroke="#222" stroke-width="2"/>
-<line x1="62" y1="262" x2="80" y2="276" stroke="#222" stroke-width="2"/>
-<line x1="62" y1="264" x2="62" y2="296" stroke="#222" stroke-width="3"/>
-<line x1="62" y1="296" x2="80" y2="312" stroke="#222" stroke-width="2"/>
-<polygon points="80,312 71,311 76,303" fill="#222"/>
-<line x1="80" y1="312" x2="80" y2="340" stroke="#222" stroke-width="2"/>
-<line x1="60" y1="340" x2="100" y2="340" stroke="#222" stroke-width="3"/>
-<text x="110" y="344" font-size="11" fill="#666">GND</text>
-<text x="96" y="318" font-size="11" fill="#666">driver (SOT-23 NPN)</text>
-<!-- base resistor from MCU -->
-<line x1="62" y1="280" x2="40" y2="280" stroke="#222" stroke-width="2"/>
-<line x1="40" y1="280" x2="40" y2="366" stroke="#222" stroke-width="2"/>
-<rect x="30" y="300" width="20" height="40" fill="none" stroke="#222" stroke-width="2"/>
-<text x="60" y="384" text-anchor="middle" font-size="11" fill="#666">from MCU (2.8 V)</text>
-<!-- tap node -->
-<circle cx="62" cy="280" r="5" fill="#1D9E75"/>
-<line x1="62" y1="280" x2="200" y2="280" stroke="#1D9E75" stroke-width="2.5" stroke-dasharray="6 4"/>
-<text x="210" y="276" font-size="12" fill="#1D9E75">green control pad</text>
-<text x="210" y="292" font-size="11" fill="#666">= base node, ~0.8 V on</text>
+<rect x="400" y="50" width="330" height="345" rx="10" fill="#eef8f4" stroke="#1D9E75" stroke-width="1.5"/>
+<text x="565" y="74" text-anchor="middle" font-size="13" fill="#1D9E75">Green Thumb flex</text>
+<!-- LED channel: rail -> R -> die -> driver collector -->
+<text x="80" y="106" text-anchor="middle" font-size="12" fill="#222">5 V LED rail</text>
+<line x1="80" y1="114" x2="80" y2="138" stroke="#222" stroke-width="2"/>
+<rect x="70" y="138" width="20" height="40" fill="none" stroke="#222" stroke-width="2"/>
+<text x="100" y="162" font-size="11" fill="#666">R (board)</text>
+<line x1="80" y1="178" x2="80" y2="202" stroke="#222" stroke-width="2"/>
+<polygon points="70,202 90,202 80,219" fill="#1D9E75"/>
+<line x1="70" y1="219" x2="90" y2="219" stroke="#1D9E75" stroke-width="2"/>
+<text x="100" y="214" font-size="11" fill="#1D9E75">green die</text>
+<line x1="80" y1="219" x2="80" y2="256" stroke="#222" stroke-width="2"/>
+<!-- driver NPN, base facing right -->
+<line x1="80" y1="256" x2="98" y2="270" stroke="#222" stroke-width="2"/>
+<line x1="98" y1="264" x2="98" y2="296" stroke="#222" stroke-width="3"/>
+<line x1="98" y1="290" x2="80" y2="306" stroke="#222" stroke-width="2"/>
+<polygon points="80,306 90.1,302.4 84.8,296.4" fill="#222"/>
+<line x1="80" y1="306" x2="80" y2="340" stroke="#222" stroke-width="2"/>
+<line x1="64" y1="340" x2="96" y2="340" stroke="#222" stroke-width="3"/>
+<text x="58" y="344" text-anchor="end" font-size="11" fill="#666">GND</text>
+<text x="150" y="320" font-size="11" fill="#666">driver (SOT-23 NPN)</text>
+<!-- base lead, tap point, base resistor from MCU -->
+<line x1="98" y1="280" x2="130" y2="280" stroke="#222" stroke-width="2"/>
+<line x1="130" y1="280" x2="130" y2="298" stroke="#222" stroke-width="2"/>
+<rect x="120" y="298" width="20" height="40" fill="none" stroke="#222" stroke-width="2"/>
+<line x1="130" y1="338" x2="130" y2="364" stroke="#222" stroke-width="2"/>
+<text x="130" y="380" text-anchor="middle" font-size="11" fill="#666">from MCU (2.8 V)</text>
+<circle cx="130" cy="280" r="5" fill="#1D9E75"/>
+<line x1="135" y1="280" x2="200" y2="280" stroke="#1D9E75" stroke-width="2.5" stroke-dasharray="6 4"/>
+<line x1="200" y1="280" x2="430" y2="280" stroke="#1D9E75" stroke-width="2.5"/>
+<text x="210" y="274" font-size="12" fill="#1D9E75">green control pad</text>
+<text x="210" y="294" font-size="11" fill="#666">= base node, ~0.8 V on</text>
+<!-- blue tap -->
+<circle cx="200" cy="226" r="5" fill="#378ADD"/>
+<line x1="200" y1="226" x2="430" y2="226" stroke="#378ADD" stroke-width="2.5"/>
+<text x="210" y="241" font-size="12" fill="#378ADD">blue control pad</text>
+<text x="210" y="254" font-size="11" fill="#666">(blue driver base, same circuit)</text>
 <!-- button -->
 <rect x="200" y="100" width="130" height="50" rx="6" fill="none" stroke="#222" stroke-width="1.5"/>
 <text x="265" y="120" text-anchor="middle" font-size="12" fill="#222">tactile button</text>
 <text x="265" y="138" text-anchor="middle" font-size="11" fill="#666">line pulled up by MCU</text>
 <circle cx="265" cy="160" r="5" fill="#1D9E75"/>
 <text x="275" y="176" font-size="11" fill="#666">button pad</text>
-<!-- flex side -->
-<rect x="400" y="50" width="330" height="340" rx="10" fill="#eef8f4" stroke="#1D9E75" stroke-width="1.5"/>
-<text x="565" y="74" text-anchor="middle" font-size="13" fill="#1D9E75">Green Thumb flex</text>
-<line x1="200" y1="280" x2="430" y2="280" stroke="#1D9E75" stroke-width="2.5"/>
-<text x="440" y="275" font-size="12" fill="#222">GRN_SGNL → C1 → R2 → Q1 IN</text>
-<text x="440" y="300" font-size="12" fill="#222">R1 to GND</text>
-<text x="440" y="230" font-size="12" fill="#378ADD">BLU_SGNL → Q2 clamps Q1 IN</text>
-<circle cx="200" cy="226" r="5" fill="#378ADD"/>
-<line x1="200" y1="226" x2="430" y2="226" stroke="#378ADD" stroke-width="2.5"/>
-<text x="210" y="241" font-size="12" fill="#378ADD">blue control pad</text>
-<text x="210" y="254" font-size="11" fill="#666">(blue driver base, same circuit)</text>
-<text x="440" y="330" font-size="12" fill="#222">Q1 GND → GND</text>
 <line x1="265" y1="165" x2="265" y2="200" stroke="#1D9E75" stroke-width="2.5"/>
 <line x1="265" y1="200" x2="430" y2="200" stroke="#1D9E75" stroke-width="2.5"/>
-<text x="440" y="204" font-size="12" fill="#222">Q1 OUT → BTN</text>
-<text x="565" y="370" text-anchor="middle" font-size="11" fill="#666">draws ~0 at rest; tens of µA for ~100 ms during a tap</text>
+<!-- ground -->
+<circle cx="220" cy="356" r="5" fill="#E8590C"/>
+<line x1="220" y1="356" x2="430" y2="356" stroke="#E8590C" stroke-width="2.5"/>
+<text x="230" y="372" font-size="10" fill="#666">ground pad (not the antenna feed)</text>
+<!-- flex side -->
+<text x="440" y="204" font-size="12" fill="#222">BTN ← Q1 OUT</text>
+<text x="440" y="230" font-size="12" fill="#378ADD">BLU_SGNL → Q2, clamps Q1 IN</text>
+<text x="440" y="284" font-size="12" fill="#222">GRN_SGNL → C1 → R2 → Q1 IN</text>
+<text x="440" y="360" font-size="12" fill="#222">GND ← Q1, Q2 and R1</text>
+<text x="565" y="386" text-anchor="middle" font-size="11" fill="#666">draws ~0 at rest; tens of µA for ~100 ms during a tap</text>
 </svg>
