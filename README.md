@@ -82,9 +82,6 @@ Each mod, its wiring and its failure modes: [docs/mod-comparison.md](docs/mod-co
 
 Both taps are on the **base nodes of the LED driver transistors** — about 0.8 V when a channel is driven, 0 V otherwise. They're voltage taps drawing microamps, so LED brightness and MCU timing are untouched.
 
-<p align="center">
-  <img src="images/board-context.svg" alt="Where Green Thumb taps the LED board" width="760">
-</p>
 
 Pads on the flex: **GRN_SGNL**, **BLU_SGNL**, **BTN**, **GND**.
 
