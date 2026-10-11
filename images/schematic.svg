@@ -28,6 +28,7 @@
 <rect x="400" y="90" width="180" height="130" rx="8" fill="#f4f4f4" stroke="#222" stroke-width="2"/>
 <text x="490" y="80" text-anchor="middle" font-size="13" font-weight="bold" fill="#222">Q1  digital transistor</text>
 <text x="408" y="140" font-size="11" fill="#222">1 IN</text>
+<line x1="400" y1="150" x2="440" y2="150" stroke="#222" stroke-width="2"/>
 <rect x="440" y="143" width="34" height="14" fill="none" stroke="#555" stroke-width="1.5"/>
 <line x1="474" y1="150" x2="510" y2="150" stroke="#555" stroke-width="1.5"/>
 <circle cx="492" cy="150" r="2.5" fill="#555"/>
@@ -55,9 +56,16 @@
 <text x="50" y="348" text-anchor="middle" font-size="11" fill="#666">blue driver base</text>
 <line x1="59" y1="320" x2="250" y2="320" stroke="#222" stroke-width="2"/><line x1="250" y1="320" x2="250" y2="300" stroke="#222" stroke-width="2"/><line x1="250" y1="300" x2="300" y2="300" stroke="#222" stroke-width="2"/>
 <rect x="300" y="250" width="160" height="110" rx="8" fill="#eef4fb" stroke="#378ADD" stroke-width="2"/>
-<text x="308" y="350" font-size="12" font-weight="bold" fill="#378ADD">Q2 inhibit</text>
-<text x="308" y="294" font-size="11" fill="#222">1 IN</text>
-<line x1="335" y1="300" x2="370" y2="300" stroke="#555" stroke-width="1.5"/>
+<text x="292" y="342" text-anchor="end" font-size="12" font-weight="bold" fill="#378ADD">Q2 digital transistor</text><text x="292" y="358" text-anchor="end" font-size="12" font-weight="bold" fill="#378ADD">(inhibit)</text>
+<text x="304" y="290" font-size="11" fill="#222">1 IN</text>
+<line x1="300" y1="300" x2="316" y2="300" stroke="#222" stroke-width="2"/>
+<rect x="316" y="293" width="26" height="14" fill="none" stroke="#555" stroke-width="1.5"/>
+<line x1="342" y1="300" x2="370" y2="300" stroke="#555" stroke-width="1.5"/>
+<circle cx="356" cy="300" r="2.5" fill="#555"/>
+<line x1="356" y1="300" x2="356" y2="312" stroke="#555" stroke-width="1.5"/>
+<rect x="349" y="312" width="14" height="24" fill="none" stroke="#555" stroke-width="1.5"/>
+<line x1="356" y1="336" x2="356" y2="344" stroke="#555" stroke-width="1.5"/>
+<line x1="356" y1="344" x2="400" y2="344" stroke="#555" stroke-width="1.5"/>
 <line x1="370" y1="286" x2="370" y2="314" stroke="#222" stroke-width="3"/>
 <line x1="370" y1="292" x2="400" y2="272" stroke="#222" stroke-width="2"/>
 <line x1="370" y1="308" x2="400" y2="328" stroke="#222" stroke-width="2"/>
@@ -72,6 +80,7 @@
 <line x1="400" y1="360" x2="400" y2="400" stroke="#222" stroke-width="2"/>
 <!-- GND bus -->
 <line x1="400" y1="400" x2="690" y2="400" stroke="#222" stroke-width="2"/>
+<circle cx="540" cy="400" r="3.5" fill="#222"/>
 <circle cx="699" cy="400" r="9" fill="none" stroke="#E8590C" stroke-width="2.5"/>
 <text x="716" y="404" font-size="13" fill="#E8590C">GND</text>
 <!-- notes -->
