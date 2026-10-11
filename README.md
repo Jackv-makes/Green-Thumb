@@ -84,12 +84,6 @@ Each mod, its wiring and its failure modes: [docs/mod-comparison.md](docs/mod-co
 - **Q2, a second digital transistor**, watches the blue channel. While blue is on it holds Q1's input at ground, so a green edge that arrives with blue — white, cyan — goes nowhere.
 - **R2, a series resistor** between C1 and Q1, gives Q2 something to clamp against. Without it, clamping during white would make C1 charge straight from the green driver, starving it for the length of a blink: white would turn magenta. With it, the clamp costs the driver a negligible current and green stays lit.
 
-Both taps are on the **base nodes of the LED driver transistors** — about 0.8 V when a channel is driven, 0 V otherwise. They're voltage taps drawing microamps, so LED brightness and MCU timing are untouched.
-
-<p align="center">
-  <img src="images/board-context.svg" alt="Where Green Thumb taps the LED board" width="760">
-</p>
-
 Pads on the flex: **GRN_SGNL**, **BLU_SGNL**, **BTN**, **GND**.
 
 Full explanation: [docs/how-it-works.md](docs/how-it-works.md).
