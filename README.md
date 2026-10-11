@@ -66,13 +66,13 @@ On the reference device, the same tap circuit without its blue inhibit made the 
 | | Single wire | Opto-relay | MOSFET + pull-down | MOSFET + blue inhibit | Vibration-gated | **Green Thumb** |
 |---|---|---|---|---|---|---|
 | Button action | inverted hold (pressed while LED is **off**) | hold while green on | hold while green on | hold while green on, not during white | pressed while green **and** motor on | ~100 ms tap on green |
-| White-light loop | likely (a press/release on every blink) | yes | yes | no | no | no |
+| White-light loop | likely (a press/release on every blink) | yes (fewer if output goes to motor −) | yes | no | reduced | no |
 | Long-press risk | yes | yes | yes | yes | low (vibration bursts are short) | no |
 | Stuck-button error loop | yes | no | no | no | no | no |
 | Idle battery drain | ~200 µA continuous | none | none | none | none | none |
 | Green LED affected | back-feeds driver | often dimmed | no | no | no | no |
 | Depends on vibration being on | no | no | no | no | **yes** | no |
-| Works from the ~0.8 V base pad | by accident | no | marginal | marginal | marginal | yes |
+| Works from the ~0.8 V base pad | by accident | marginal (low-trigger-current parts only) | marginal | marginal | marginal | yes |
 | Wires to the device | 1 | 4 | 3 | 4 | 3–4 | 4 |
 
 Each mod, its wiring and its failure modes: [docs/mod-comparison.md](docs/mod-comparison.md).

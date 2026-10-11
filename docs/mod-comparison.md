@@ -25,11 +25,17 @@ Two failure modes matter on this device:
 
 ## 2. Opto-relay (G3VM-61G3 and similar)
 
-**Wiring:** the relay's input LED between a positive rail and the green driver's collector; its output contact across the button.
+**Wiring:** the relay's input LED driven from the green channel — either between a positive rail and the green driver's collector, or straight from the green control pad (the driver's base node) to ground; its output contact across the button.
 
 **What it does:** correct polarity, fully isolated. The button is held for as long as the green die is being driven.
 
-**Failure modes:** held press (long-press modes); the relay's LED sits in the green die's current path, so green often dims or drops out; it needs milliamps, so it can't run from the base pad; four wires between two boards. It watches green only, so it also loops on white.
+**Failure modes:**
+- Held press (long-press modes).
+- Collector-wired versions put the relay's LED in the green die's current path, so green often dims or drops out.
+- Base-pad versions run the relay's input from a signal of only ~0.67–0.86 V. Its infrared LED needs about 1.1 V to conduct properly, so it barely lights: builders report that only low-trigger-current photorelays work, and less reliably on weaker boards.
+- It watches green only, so with its output to ground it loops on white.
+
+**Variant: output to the motor's negative pad.** Some builds connect the relay's output contact between the button and the vibration motor's negative pad instead of ground, and report fewer white-light loop issues. That pad only reaches ground while the motor is running, so the relay can only press while the device is vibrating; white search blinks don't vibrate, so most of them can't press. It's fewer, not none — any white that coincides with vibration can still press. This makes it a vibration-gated mod (see 5), with the same trade-offs.
 
 ## 3. MOSFET with pull-down
 
@@ -52,9 +58,10 @@ Two failure modes matter on this device:
 **Wiring variants:**
 - MOSFET gate on green, **source on the vibration motor's switched pad** instead of ground. The MOSFET only has a ground return while the motor runs.
 - Two transistors in series in the button path, one driven by green and one by the motor signal.
+- A photorelay driven by green, with its output between the button and the motor's negative pad (see the variant under 2).
 - A diode in the ground path in some builds; where the source sits on a motor pad, a diode there blocks a back-feed path through the MOSFET's body diode that can otherwise buzz the motor on manual presses.
 
-**What it does:** presses only while green **and** vibration are both on — an AND gate. The device vibrates when it wants attention and not during the search, so white blinks don't trigger it. Vibration bursts are short, so the press is naturally short too.
+**What it does:** presses only while green **and** vibration are both on — an AND gate. The device vibrates when it wants attention and not during the search, so white blinks mostly don't trigger it; white that coincides with vibration still can, so loops are reduced rather than eliminated. Vibration bursts are short, so the press is naturally short too.
 
 **Failure modes and trade-offs:**
 - Only works if the motor's switched side is the pad you tap. Measure it idle: ~2.8 V means low-side switched (the source-on-motor method works); 0 V means it's just ground (that method does nothing).
@@ -72,12 +79,12 @@ Base-node voltage tap → series capacitor → digital transistor → button: on
 | Polarity | inverted | correct | correct | correct | correct | correct |
 | Duration | hold (while off) | hold | hold | hold | vibration burst | tap |
 | Long-press risk | yes | yes | yes | yes | low | no |
-| White-light loop | likely | yes | yes | no | no | no |
+| White-light loop | likely | yes (fewer if output goes to motor −) | yes | no | reduced | no |
 | Stuck-button loop | yes | no | no | no | no | no |
 | Idle drain | ~200 µA | 0 | 0 | 0 | 0 | 0 |
 | Green brightness | affected | often dimmed | unaffected | unaffected | unaffected | unaffected |
 | Needs vibration on | no | no | no | no | yes | no |
-| Fires from 0.8 V pad | by accident | no | marginal | marginal | marginal | yes |
+| Fires from 0.8 V pad | by accident | marginal (low-trigger-current parts only) | marginal | marginal | marginal | yes |
 | Wires to device | 1 | 4 | 3 | 4 | 3–4 | 4 |
 
 The one thing Green Thumb gives up versus the hold-type mods is the ability to *hold* the button on purpose; a device that needs a hold is better served by mod 4 or 5.
