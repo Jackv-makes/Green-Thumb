@@ -4,9 +4,9 @@
 
 [![Support me on Ko-fi](https://ko-fi.com/img/githubbutton_sm.svg)](https://ko-fi.com/jackvmakes)
 
-<!-- TODO: add a photo of Green Thumb installed on the LED board, e.g.
-<p align="center"><img src="images/green-thumb-installed.jpg" alt="Green Thumb installed on the LED board" width="420"></p>
--->
+<p align="center">
+  <img src="images/green-thumb.png" alt="Green Thumb flex PCB, showing the BTN, GND, BLUE and GREEN pads" width="340">
+</p>
 
 Green Thumb watches the control lines of the green and blue channels on the device's RGB LED board. When green turns on by itself, it pulls the button line to ground for about 100 ms. The device sees an ordinary button tap. When blue is on as well — white, cyan — it does nothing. The rest of the time the circuit is electrically invisible.
 
@@ -82,18 +82,38 @@ Each mod, its wiring and its failure modes: [docs/mod-comparison.md](docs/mod-co
 </p>
 
 - **Q1, a digital transistor** (an NPN with its bias resistors built in), pulls the button line to ground. It turns on at well under a volt, and its built-in pull-down means its input can never float.
-- **C1, a series capacitor**, turns a level into a pulse. A rising edge on GRN_SGNL passes through and switches Q1 on; the capacitor then charges and Q1 releases after roughly 100 ms, however long the LED stays lit. A falling edge drives the input negative, so LED-off produces no press.
+- **C1, a series capacitor**, turns a level into a pulse. A rising edge on the GREEN pad passes through and switches Q1 on; the capacitor then charges and Q1 releases after roughly 100 ms, however long the LED stays lit. A falling edge drives the input negative, so LED-off produces no press.
 - **R1, a bleed resistor**, drains C1 after each event so it's ready for the next edge.
 - **Q2, a second digital transistor**, watches the blue channel. While blue is on it holds Q1's input at ground, so a green edge that arrives with blue — white, cyan — goes nowhere.
 - **R2, a series resistor** between C1 and Q1, gives Q2 something to clamp against. Without it, clamping during white would make C1 charge straight from the green driver, starving it for the length of a blink: white would turn magenta. With it, the clamp costs the driver a negligible current and green stays lit.
 
-Pads on the flex: **GRN_SGNL**, **BLU_SGNL**, **BTN**, **GND**.
+Pads on the flex: **GREEN**, **BLUE**, **BTN**, **GND**.
 
 Full explanation: [docs/how-it-works.md](docs/how-it-works.md).
 
 ## Installing
 
-Solder the flex's four pads — **GRN_SGNL**, **BLU_SGNL**, **BTN** and **GND** — to their matching points on the LED board. Nothing else on the device is modified. See [docs/install.md](docs/install.md), then [docs/testing.md](docs/testing.md) to check it.
+Solder the flex's four pads — **GREEN**, **BLUE**, **BTN** and **GND** — to their matching points on the LED board. Nothing else on the device is modified. See [docs/install.md](docs/install.md), then [docs/testing.md](docs/testing.md) to check it.
+
+## Repository layout
+
+```
+green-thumb/
+├── README.md
+├── LICENSE.md               Green Thumb Hardware License
+├── CHANGELOG.md
+├── CONTRIBUTING.md
+├── hardware/
+│   └── README.md            pad list and LED-board notes
+├── docs/
+│   ├── how-it-works.md
+│   ├── white-loop.md
+│   ├── mod-comparison.md
+│   ├── install.md
+│   ├── testing.md
+│   └── faq.md
+└── images/
+```
 
 ## Support
 

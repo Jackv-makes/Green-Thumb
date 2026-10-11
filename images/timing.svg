@@ -2,8 +2,8 @@
 <rect width="760" height="400" fill="#ffffff"/>
 <text x="380" y="28" text-anchor="middle" font-size="18" font-weight="bold" fill="#222">What the button line sees when green turns on</text>
 <text x="380" y="44" text-anchor="middle" font-size="11" fill="#666">Button line: high = released, low = pressed</text>
-<!-- GRN_SGNL -->
-<text x="20" y="92" font-size="13" fill="#1D9E75">GRN_SGNL</text>
+<!-- GREEN -->
+<text x="20" y="92" font-size="13" fill="#1D9E75">GREEN pad</text>
 <polyline points="150,104 260,104 260,76 560,76 560,104 740,104" fill="none" stroke="#1D9E75" stroke-width="3"/>
 <text x="410" y="68" text-anchor="middle" font-size="11" fill="#1D9E75">green on (any duration)</text>
 <!-- Green Thumb -->

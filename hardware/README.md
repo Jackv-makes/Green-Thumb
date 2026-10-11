@@ -10,9 +10,9 @@ Notes about the **device's** LED board, useful for installation and for anyone d
 
 | Pad | Goes to |
 |---|---|
-| GRN_SGNL | base node of the green LED driver |
-| BLU_SGNL | base node of the blue LED driver — must read 0 V in the pure-green state |
+| GREEN | base node of the green LED driver |
+| BLUE | base node of the blue LED driver — must read 0 V in the pure-green state |
 | BTN | button line |
 | GND | ground |
 
-On the reference board the blue and green control pads are adjacent on the Side B edge (blue on the left as viewed from Side B), so GRN_SGNL and BLU_SGNL sit next to each other on the flex.
+On the reference board the blue and green control pads are adjacent on the Side B edge (blue on the left as viewed from Side B), so GREEN and BLUE sit next to each other on the flex.

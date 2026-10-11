@@ -2,10 +2,12 @@
 
 Green Thumb is installed by soldering its four pads to the matching points on the LED board. Nothing else on the device is modified.
 
+<p align="center"><img src="../images/green-thumb.png" alt="Green Thumb flex PCB with its four pads labelled" width="300"></p>
+
 | Flex pad | Solders to |
 |---|---|
-| GRN_SGNL | green control point |
-| BLU_SGNL | blue control point |
+| GREEN | green control point |
+| BLUE | blue control point |
 | BTN | button point |
 | GND | ground point |
 
