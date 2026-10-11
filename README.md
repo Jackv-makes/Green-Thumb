@@ -74,10 +74,6 @@ Each mod, its wiring and its failure modes: [docs/mod-comparison.md](docs/mod-co
 
 ## How it works
 
-<p align="center">
-  <img src="images/schematic.svg" alt="Green Thumb schematic" width="760">
-</p>
-
 - **Q1, a digital transistor** (an NPN with its bias resistors built in), pulls the button line to ground. It turns on at well under a volt, and its built-in pull-down means its input can never float.
 - **C1, a series capacitor**, turns a level into a pulse. A rising edge on GRN_SGNL passes through and switches Q1 on; the capacitor then charges and Q1 releases after roughly 100 ms, however long the LED stays lit. A falling edge drives the input negative, so LED-off produces no press.
 - **R1, a bleed resistor**, drains C1 after each event so it's ready for the next edge.
