@@ -10,7 +10,6 @@ Green Thumb watches the control lines of the green and blue channels on the devi
 
 It exists because the popular ways of doing this either *hold* the button, which pushes the device into long-press modes, or can't tell green from white, which traps the device in an endless white-blink loop.
 
-**Current version: v1.1** (adds the blue inhibit). See [Versions](#versions).
 
 ---
 
@@ -21,7 +20,6 @@ It exists because the popular ways of doing this either *hold* the button, which
 - [How it compares to other mods](#how-it-compares-to-other-mods)
 - [How it works](#how-it-works)
 - [Installing](#installing)
-- [Versions](#versions)
 - [Repository layout](#repository-layout)
 - [License](#license)
 - [Disclaimer](#disclaimer)
@@ -30,7 +28,7 @@ It exists because the popular ways of doing this either *hold* the button, which
 
 ## What it does
 
-| Device event | Green Thumb v1.1 |
+| Device event | Green Thumb |
 |---|---|
 | Green turns on from dark | One ~100 ms button tap, within microseconds of the LED driver switching |
 | Green stays on | Nothing more — the tap has already ended |
@@ -53,14 +51,14 @@ Because the press is a tap, the device never sees a long hold. Because the line 
 Pressing the button while the device is disconnected starts a search, shown as **nine white blinks, then stop**. White is red + green + blue, so every one of those blinks drives the green channel exactly as a real green would. Any mod that only watches green therefore presses the button on each blink, the press restarts the search, and the device blinks white indefinitely.
 
 <p align="center">
-  <img src="images/white-loop.svg" alt="The white-light loop, v1 versus v1.1" width="760">
+  <img src="images/white-loop.svg" alt="The white-light loop: a green-only mod versus Green Thumb" width="760">
 </p>
 
-This was confirmed on the reference device by disconnecting Green Thumb v1's ground: the search went back to nine blinks and stopped. A pull-down can't fix it. Some builds report that a diode does, most likely because green is driven more weakly (PWM) during white and the diode leaves those presses just short of registering — that works on margins rather than by design. A dependable fix needs a second input. Green Thumb v1.1 uses **blue**: white contains it, the green "press me" state doesn't. Other builds use **vibration**. Full write-up: [docs/white-loop.md](docs/white-loop.md).
+On the reference device, the same tap circuit without its blue inhibit made the white flashing endless; lifting its ground brought back nine blinks and stop. A pull-down can't fix it. Some builds report that a diode does, most likely because green is driven more weakly (PWM) during white and the diode leaves those presses just short of registering — that works on margins rather than by design. A dependable fix needs a second input. Green Thumb uses **blue**: white contains it, the green "press me" state doesn't. Other builds use **vibration**. Full write-up: [docs/white-loop.md](docs/white-loop.md).
 
 ## How it compares to other mods
 
-| | Single wire | Opto-relay | MOSFET + pull-down | MOSFET + blue inhibit | Vibration-gated | **Green Thumb v1.1** |
+| | Single wire | Opto-relay | MOSFET + pull-down | MOSFET + blue inhibit | Vibration-gated | **Green Thumb** |
 |---|---|---|---|---|---|---|
 | Button action | inverted hold (pressed while LED is **off**) | hold while green on | hold while green on | hold while green on, not during white | pressed while green **and** motor on | ~100 ms tap on green |
 | White-light loop | likely (a press/release on every blink) | yes | yes | no | no | no |
@@ -77,7 +75,7 @@ Each mod, its wiring and its failure modes: [docs/mod-comparison.md](docs/mod-co
 ## How it works
 
 <p align="center">
-  <img src="images/schematic.svg" alt="Green Thumb v1.1 schematic" width="760">
+  <img src="images/schematic.svg" alt="Green Thumb schematic" width="760">
 </p>
 
 - **Q1, a digital transistor** (an NPN with its bias resistors built in), pulls the button line to ground. It turns on at well under a volt, and its built-in pull-down means its input can never float.
@@ -105,16 +103,6 @@ Short version — the full procedure with measurements is in [docs/install.md](d
 3. Find the **button pad** (~2.8 V idle, 0 V pressed) and a **ground pad** that isn't part of the antenna feed.
 4. Connect GRN_SGNL, BLU_SGNL, BTN and GND.
 5. Test: green state clears on its own; a press while disconnected gives nine white blinks and stops; manual presses behave as stock.
-
-## Versions
-
-| | v1 | v1.1 |
-|---|---|---|
-| Tap on green rising edge | ✓ | ✓ |
-| Ignores red / blue alone | ✓ | ✓ |
-| Ignores white and cyan | ✗ — causes the white-light loop | ✓ |
-| Pads | GRN_SGNL, BTN, GND | GRN_SGNL, **BLU_SGNL**, BTN, GND |
-
 
 ## Repository layout
 
