@@ -23,7 +23,7 @@ On the reference device, Green Thumb's tap circuit *without* its blue inhibit ma
 - **A pull-down on the gate/input.** Floating inputs cause their own problem — a press that sticks after the LED goes off — and a pull-down fixes that. But Green Thumb's tap transistor already has a pull-down built in, and without the blue inhibit the circuit still loops. The loop isn't a stuck input; it's a correct response to a green signal that happens to be part of white.
 - **A one-shot on its own.** It turns a hold into a tap, which stops long-press problems, but a tap per white blink is still a press per blink.
 
-## What sometimes appears to fix it: a diode
+## What sometimes appears to fix it: a diode or an optocoupler
 
 Some MOSFET builds put a diode in the source (ground) leg, and their authors report it stops the white loop. Others have pointed out that the loop mechanism is still present on those devices — pressing the button by hand during the nine white flashes still resets the count — so the diode must be stopping *white* from registering as a press rather than removing the cause.
 
@@ -34,6 +34,8 @@ The likely explanation:
 - Solid green drives the MOSFET hard enough to cross that edge; white's weaker green doesn't, or produces a flickering press that firmware debounce rejects.
 
 If that's right, the diode works by sitting on a threshold, not by telling white from green. Part-to-part spread, temperature and battery voltage can move that threshold either way — including to the point where pure green stops registering. It's a plausible result on some units, not a reliable fix.
+
+**Optocouplers wired to ground show the same effect.** Builds that drive an optocoupler (for example a TLP785) straight from the green control pad, with its output from the button to ground, are also reported not to loop on some units. The optocoupler's input LED barely conducts at 0.67–0.86 V, so how hard its output pulls the button depends steeply on how strongly green is being driven. One builder measured about 0.666 V on the green pad normally and up to about 0.86 V during catching. If green is weaker during white, the optocoupler can fail to register white while still registering a catch. It's fragile for the same reasons as the diode, plus the optocoupler's large part-to-part gain spread: the same wiring may loop on one unit and fail to press at all on another. As with the diode, a manual press during the white flashes still resets the count, so the loop mechanism hasn't gone away.
 
 A one-shot without an inhibit wouldn't benefit from this effect: it fires on the first edge, PWM'd or not.
 

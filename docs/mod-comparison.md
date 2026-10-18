@@ -23,19 +23,24 @@ Two failure modes matter on this device:
 - *Battery.* The button's pull-up (~13 kΩ from 2.8 V) is shorted through the MCU pin all day: ~200 µA continuous, plus whatever a "held" button does to sleep.
 - *Back-feeding* the green driver's base.
 
-## 2. Opto-relay (G3VM-61G3 and similar)
+## 2. Optocoupler / photorelay (TLP785, G3VM-61G3 and similar)
 
-**Wiring:** the relay's input LED driven from the green channel — either between a positive rail and the green driver's collector, or straight from the green control pad (the driver's base node) to ground; its output contact across the button.
+Two kinds of part are used, and they behave alike here:
+- **Phototransistor optocouplers** (TLP785 and similar): the output is a transistor, collector to the button point, emitter to ground.
+- **Photorelays** (G3VM-61G3, AQY212S, TLP172AM and similar): the output is a MOSFET contact across the button.
 
-**What it does:** correct polarity, fully isolated. The button is held for as long as the green die is being driven.
+**Wiring:** the part's input LED driven from the green channel — either between a positive rail and the green driver's collector, or straight from the green control pad (the driver's base node) to ground; its output across the button.
+
+**What it does:** correct polarity, fully isolated. The button is held for as long as the green channel is being driven.
 
 **Failure modes:**
 - Held press (long-press modes).
 - Collector-wired versions put the relay's LED in the green die's current path, so green often dims or drops out.
-- Base-pad versions run the relay's input from a signal of only ~0.67–0.86 V. Its infrared LED needs about 1.1 V to conduct properly, so it barely lights: builders report that only low-trigger-current photorelays work, and less reliably on weaker boards.
-- It watches green only, so with its output to ground it loops on white.
+- Base-pad versions run the input from a signal of only ~0.67–0.86 V. The infrared LED inside needs about 1.1 V to conduct properly, so it barely lights: builders report that only low-trigger-current photorelays work, and less reliably on weaker boards.
+- Large part-to-part spread. A phototransistor optocoupler's gain (current transfer ratio) varies widely — roughly 50–600% for the TLP785 — so the same wiring can press reliably on one unit and not at all on another.
+- It watches green only, so with its output to ground it should loop on white. Some builders report that it doesn't on their units; that's most likely a margin effect rather than a fix — see [white-loop.md](white-loop.md#what-sometimes-appears-to-fix-it-a-diode-or-an-optocoupler).
 
-**Variant: output to the motor's negative pad.** Some builds connect the relay's output contact between the button and the vibration motor's negative pad instead of ground, and report fewer white-light loop issues. That pad only reaches ground while the motor is running, so the relay can only press while the device is vibrating; white search blinks don't vibrate, so most of them can't press. It's fewer, not none — any white that coincides with vibration can still press. This makes it a vibration-gated mod (see 5), with the same trade-offs.
+**Variant: output to the motor's negative pad.** Some builds connect the output between the button and the vibration motor's negative pad instead of ground, and report fewer white-light loop issues. That pad only reaches ground while the motor is running, so it can only press while the device is vibrating; white search blinks don't vibrate, so most of them can't press. It's fewer, not none — any white that coincides with vibration can still press. This makes it a vibration-gated mod (see 5), with the same trade-offs.
 
 ## 3. MOSFET with pull-down
 
@@ -74,17 +79,17 @@ Base-node voltage tap → series capacitor → digital transistor → button: on
 
 ## Summary
 
-| | Single wire | Opto-relay | MOSFET + R | MOSFET + blue inhibit | Vibration-gated | **Green Thumb** |
+| | Single wire | Optocoupler / photorelay | MOSFET + R | MOSFET + blue inhibit | Vibration-gated | **Green Thumb** |
 |---|---|---|---|---|---|---|
 | Polarity | inverted | correct | correct | correct | correct | correct |
 | Duration | hold (while off) | hold | hold | hold | vibration burst | tap |
 | Long-press risk | yes | yes | yes | yes | low | no |
-| White-light loop | likely | yes (fewer if output goes to motor −) | yes | no | reduced | no |
+| White-light loop | likely | usually; some units report none (by margin); fewer if output goes to motor − | yes | no | reduced | no |
 | Stuck-button loop | yes | no | no | no | no | no |
 | Idle drain | ~200 µA | 0 | 0 | 0 | 0 | 0 |
 | Green brightness | affected | often dimmed | unaffected | unaffected | unaffected | unaffected |
 | Needs vibration on | no | no | no | no | yes | no |
-| Fires from 0.8 V pad | by accident | marginal (low-trigger-current parts only) | marginal | marginal | marginal | yes |
+| Fires from 0.8 V pad | by accident | marginal (sensitive parts only; varies unit to unit) | marginal | marginal | marginal | yes |
 | Wires to device | 1 | 4 | 3 | 4 | 3–4 | 4 |
 
 The one thing Green Thumb gives up versus the hold-type mods is the ability to *hold* the button on purpose; a device that needs a hold is better served by mod 4 or 5.

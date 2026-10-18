@@ -9,6 +9,9 @@ No. A pull-down fixes a *floating* input that keeps pressing after the LED goes 
 **Does the diode some mods use fix it?**
 Some builders report it does. The likely reason is that green is driven more weakly (PWM) during white, and a diode in the source leg leaves the MOSFET only just able to pull the button low — enough for solid green, not for white. That depends on margins that vary between parts, temperature and battery level, so treat it as unreliable. The loop mechanism itself is still there: a manual press during the white flashes still resets the count. In vibration-gated builds a diode can have a different job: blocking a back-feed path into the motor. Details in [white-loop.md](white-loop.md).
 
+**Some people say their optocoupler mod doesn't loop on white. Why?**
+Most likely margin. The optocoupler's input barely conducts at the green pad's ~0.67–0.86 V, and green appears to be driven more strongly in some states than others, so on some units the part registers a catch but not white. It varies with the part and the unit, so it isn't a dependable fix. See [white-loop.md](white-loop.md).
+
 **What happens when blue turns off?**
 Nothing. Green Thumb only taps on a green *rising* edge while blue is off. If blue turns off while green stays on (white → green), there's no new edge, so no tap.
 

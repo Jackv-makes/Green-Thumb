@@ -1,138 +1,107 @@
 # Green Thumb
 
-**A tiny flex PCB that presses a device's button for you when its green LED comes on — as a short tap, not a hold — and ignores white.**
-
 [![Support me on Ko-fi](https://ko-fi.com/img/githubbutton_sm.svg)](https://ko-fi.com/jackvmakes)
 
 <p align="center">
   <img src="images/green-thumb.png" alt="Green Thumb flex PCB, showing the BTN, GND, BLUE and GREEN pads" width="340">
 </p>
 
-Green Thumb watches the control lines of the green and blue channels on the device's RGB LED board. When green turns on by itself, it pulls the button line to ground for about 100 ms. The device sees an ordinary button tap. When blue is on as well — white, cyan — it does nothing. The rest of the time the circuit is electrically invisible.
+This is a small flex PCB for the Pokémon GO Plus+ that presses the button for you when the green LED comes on. I wanted an auto-catch mod that taps the button instead of holding it down, and that doesn't get stuck in the white light loop like a lot of the other mods out there.
 
-It exists because the popular ways of doing this either *hold* the button, which pushes the device into long-press modes, or can't tell green from white, which traps the device in an endless white-blink loop.
+The flex sits on the LED board and solders to four points: GREEN, BLUE, BTN and GND. When green turns on by itself, it taps the button for about 100 ms. If blue is on too (white or cyan), it does nothing, so it can't get stuck on white. The rest of the time it just sits there and doesn't draw any real power.
 
+I went through a lot of the auto-catch mods people have shared before landing on this design, and I learned a ton from them along the way. See [Credit and Thanks](#credit-and-thanks) below.
 
----
+# Features
 
-## Contents
+- Taps the button for about 100 ms when green comes on, instead of holding it down
+- Ignores white and cyan, so it won't get stuck in the white light loop
+- Ignores red and blue on their own
+- Pressing the button yourself works exactly the same as before
+- Draws next to nothing when idle, so no extra battery drain
+- Doesn't dim or change the LEDs
+- Four solder points, and nothing else on the Plus+ gets modified
 
-- [What it does](#what-it-does)
-- [The white-light loop](#the-white-light-loop)
-- [How it compares to other mods](#how-it-compares-to-other-mods)
-- [How it works](#how-it-works)
-- [Installing](#installing)
-- [Repository layout](#repository-layout)
-- [Support](#support)
-- [License](#license)
-- [Disclaimer](#disclaimer)
-
----
-
-## What it does
-
-| Device event | Green Thumb |
-|---|---|
-| Green turns on from dark | One ~100 ms button tap, within microseconds of the LED driver switching |
-| Green stays on | Nothing more — the tap has already ended |
-| Green turns off | Nothing |
-| White or cyan (green **with** blue) | Nothing — blocked by the blue inhibit |
-| Yellow (green with red, no blue) | One tap, same as green |
-| Red-only or blue-only | Nothing |
-| Blue turns off while green stays on (white → green) | Nothing — there's no green rising edge |
-| Device idle | Nothing; draws nanoamps |
-| You press the button yourself | Works exactly as stock |
-
-Because the press is a tap, the device never sees a long hold. Because the line rests *released*, the firmware never sees a stuck button. Because white is blocked, a search pattern can't retrigger itself.
-
-<p align="center">
-  <img src="images/timing.svg" alt="What the button line sees under each mod when green turns on" width="700">
-</p>
-
-## The white-light loop
-
-Pressing the button while the device is disconnected starts a search, shown as **nine white blinks, then stop**. White is red + green + blue, so every one of those blinks drives the green channel exactly as a real green would. Any mod that only watches green therefore presses the button on each blink, the press restarts the search, and the device blinks white indefinitely.
-
-<p align="center">
-  <img src="images/white-loop.svg" alt="The white-light loop: a green-only mod versus Green Thumb" width="760">
-</p>
-
-On the reference device, the same tap circuit without its blue inhibit made the white flashing endless; lifting its ground brought back nine blinks and stop. A pull-down can't fix it. Some builds report that a diode does, most likely because green is driven more weakly (PWM) during white and the diode leaves those presses just short of registering — that works on margins rather than by design. A dependable fix needs a second input. Green Thumb uses **blue**: white contains it, the green "press me" state doesn't. Other builds use **vibration**. Full write-up: [docs/white-loop.md](docs/white-loop.md).
-
-## How it compares to other mods
-
-> **Note:** this list isn't exhaustive. Other mods exist, including ones that use switches; only switchless mods are compared here.
-
-| | Single wire | Opto-relay | MOSFET + pull-down | MOSFET + blue inhibit | Vibration-gated | **Green Thumb** |
-|---|---|---|---|---|---|---|
-| Button action | inverted hold (pressed while LED is **off**) | hold while green on | hold while green on | hold while green on, not during white | pressed while green **and** motor on | ~100 ms tap on green |
-| White-light loop | likely (a press/release on every blink) | yes (fewer if output goes to motor −) | yes | no | reduced | no |
-| Long-press risk | yes | yes | yes | yes | low (vibration bursts are short) | no |
-| Stuck-button error loop | yes | no | no | no | no | no |
-| Idle battery drain | ~200 µA continuous | none | none | none | none | none |
-| Green LED affected | back-feeds driver | often dimmed | no | no | no | no |
-| Depends on vibration being on | no | no | no | no | **yes** | no |
-| Works from the ~0.8 V base pad | by accident | marginal (low-trigger-current parts only) | marginal | marginal | marginal | yes |
-| Wires to the device | 1 | 4 | 3 | 4 | 3–4 | 4 |
-
-Each mod, its wiring and its failure modes: [docs/mod-comparison.md](docs/mod-comparison.md).
-
-## How it works
+# How it works
 
 <p align="center">
   <img src="images/schematic.svg" alt="Green Thumb schematic" width="760">
 </p>
 
-- **Q1, a digital transistor** (an NPN with its bias resistors built in), pulls the button line to ground. It turns on at well under a volt, and its built-in pull-down means its input can never float.
-- **C1, a series capacitor**, turns a level into a pulse. A rising edge on the GREEN pad passes through and switches Q1 on; the capacitor then charges and Q1 releases after roughly 100 ms, however long the LED stays lit. A falling edge drives the input negative, so LED-off produces no press.
-- **R1, a bleed resistor**, drains C1 after each event so it's ready for the next edge.
-- **Q2, a second digital transistor**, watches the blue channel. While blue is on it holds Q1's input at ground, so a green edge that arrives with blue — white, cyan — goes nowhere.
-- **R2, a series resistor** between C1 and Q1, gives Q2 something to clamp against. Without it, clamping during white would make C1 charge straight from the green driver, starving it for the length of a blink: white would turn magenta. With it, the clamp costs the driver a negligible current and green stays lit.
+The flex taps the green and blue control lines on the LED board. These are the points that turn each colour on, and they sit at about 0.8 V when that colour is lit and 0 V when it's off.
 
-Pads on the flex: **GREEN**, **BLUE**, **BTN**, **GND**.
+- **Q1** is a digital transistor (a transistor with its resistors built in). It pulls the button line to ground, which is the same thing that happens when you press the button.
+- **C1** turns the green signal into a short pulse, so Q1 only taps the button for about 100 ms no matter how long green stays on.
+- **R1** resets C1 after each tap so it's ready for the next one.
+- **Q2** watches blue. Whenever blue is on, it holds Q1 off, so white and cyan can't press the button.
+- **R2** sits between C1 and Q1 so that blocking white doesn't drag the green LED down with it. Without it, white turns magenta.
 
-Full explanation: [docs/how-it-works.md](docs/how-it-works.md).
+The full breakdown is in [docs/how-it-works.md](docs/how-it-works.md).
 
-## Installing
+# The white light loop
 
-Solder the flex's four pads — **GREEN**, **BLUE**, **BTN** and **GND** — to their matching points on the LED board. Nothing else on the device is modified. See [docs/install.md](docs/install.md), then [docs/testing.md](docs/testing.md) to check it.
+If you press the button while the Plus+ is disconnected, it searches for your phone, blinks white nine times, then stops. White is red, green and blue all on at once, so every one of those blinks also turns on green. A mod that only watches green presses the button on every blink, every press restarts the search, and you end up with white blinking forever.
 
-## Repository layout
+<p align="center">
+  <img src="images/white-loop.svg" alt="The white light loop: a green-only mod versus Green Thumb" width="760">
+</p>
 
-```
-green-thumb/
-├── README.md
-├── LICENSE.md               Green Thumb Hardware License
-├── CHANGELOG.md
-├── CONTRIBUTING.md
-├── hardware/
-│   └── README.md            pad list and LED-board notes
-├── docs/
-│   ├── how-it-works.md
-│   ├── white-loop.md
-│   ├── mod-comparison.md
-│   ├── install.md
-│   ├── testing.md
-│   └── faq.md
-└── images/
-```
+I ran into this myself while building Green Thumb. Without the blue check, it looped. With its ground lifted, the Plus+ went back to nine blinks and stopped. Adding the blue check fixed it, since white has blue in it and the green catch state doesn't.
 
-## Support
+You'll see people say a diode or an optocoupler fixes it. On some units it seems to, but that's most likely because the part is right on the edge of turning on, not because it can actually tell white from green. More on that in [docs/white-loop.md](docs/white-loop.md).
+
+# How it compares to other mods
+
+<p align="center">
+  <img src="images/timing.svg" alt="What the button line sees under each mod when green turns on" width="700">
+</p>
+
+Most of the other switchless mods hold the button down for as long as green is lit. That works, but if green stays on long enough the Plus+ can treat it as a long press, and most of them still loop on white. The single wire mod (with the LED left on the board) is the opposite: it holds the button down whenever green is *off*, which can get the Plus+ stuck and drains the battery. The vibration based mods only press while the motor is running, which cuts down on the white loop but stops working if you turn vibration off.
+
+Green Thumb taps instead of holding, and it ignores white.
+
+**Please note: this isn't a complete list of mods. There are also mods that use switches, and I'm only comparing switchless mods here.**
+
+The full comparison, with each mod's wiring and the problems people have run into, is in [docs/mod-comparison.md](docs/mod-comparison.md).
+
+# Installing
+
+Solder the four pads on the flex to their matching points on the LED board: GREEN, BLUE, BTN and GND. That's it, nothing else on the Plus+ gets modified. There's a quick guide in [docs/install.md](docs/install.md), and [docs/testing.md](docs/testing.md) has a few checks to make sure it's working.
+
+# Docs
+
+- [How it works](docs/how-it-works.md)
+- [The white light loop](docs/white-loop.md)
+- [Mod comparison](docs/mod-comparison.md)
+- [Install](docs/install.md) and [testing](docs/testing.md)
+- [FAQ](docs/faq.md)
+
+# Disclaimer
+
+This mod involves soldering to a small, battery powered device. If you don't have much experience with fine soldering, you can damage your Plus+, and it will void any warranty. I recommend practicing first if you're not comfortable with it.
+
+I've tested Green Thumb on my own Plus+, but I can't guarantee it'll work the same on every unit. Some people have measured weaker green signals on their boards than I have on mine, so results can vary. I'm not obligated to help with troubleshooting and will only do so at my discretion, but if you run into an actual issue or have a suggestion to improve it, please reach out.
+
+This project isn't affiliated with or endorsed by Nintendo, The Pokémon Company, or Niantic. Other people's mods are described from their public posts for comparison, and the credit for those designs belongs to them.
+
+# Credit and Thanks
+
+Huge thanks to the people in the community who shared their mods and findings. A lot of what's in here came from reading their posts and testing their ideas:
+
+- u/spacefrog_feds for sharing the diode and LED pad mods and the notes that came with them
+- u/PaperStckz for sharing a two MOSFET build with a blue inhibit
+- vulp_vibes for the vibration based approach
+- u/yurikaka for checking that a press during the white blinks resets the count, which helped pin down what the loop actually is
+- Everyone who posted their measurements and photorelay testing
+
+# Support
 
 If Green Thumb saved you some button presses, you can buy me a coffee:
 
 [![Support me on Ko-fi](https://ko-fi.com/img/githubbutton_sm.svg)](https://ko-fi.com/jackvmakes)
 
-## License
+# License
 
-Green Thumb is by **@Jackv_Makes** and is released under the **Green Thumb Hardware License v1.0** ([LICENSE.md](LICENSE.md)). In plain terms:
+**Please note that I DO ALLOW devices with Green Thumb installed to be sold, and offering installation as a service is fine too. Selling the board on its own, as a kit, or as a bare PCB is strictly prohibited.**
 
-- Devices with Green Thumb installed may be sold, and installation may be offered as a service.
-- Green Thumb boards are **not** sold or distributed as a standalone product, kit, or bare PCB — assembled or not — and the design files, bill of materials and assembly details are not published.
-- This repository documents what Green Thumb does, how it works, and how it compares to other mods.
-
-If you need something the license doesn't cover, get in touch.
-
-## Disclaimer
-
-This modification involves soldering to a battery-powered consumer device. It will void your warranty, and a slip can damage the device. The design is provided as-is with no warranty of any kind; see [LICENSE.md](LICENSE.md). The project is not affiliated with or endorsed by the device's manufacturer. Other community mods are described from their public posts for comparison; credit for those designs belongs to their authors.
+Green Thumb is released under the Green Thumb Hardware License v1.0. The design files, bill of materials and assembly details aren't published. See [LICENSE.md](LICENSE.md) for the full terms.

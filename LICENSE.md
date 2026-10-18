@@ -33,7 +33,7 @@ For clarity: paying a PCB fabricator or assembler to make Boards *for you* is fa
 
 ## 4. Conditions
 
-a. **Attribution.** Any distribution of the Design or a Derivative must include this license and the notice "Based on Green Thumb by @Jackv_Makes, <repository URL>".
+a. **Attribution.** Any distribution of the Design or a Derivative must include this license and the notice "Based on Green Thumb by @Jackv_Makes, https://github.com/Jackv-makes/Green-Thumb".
 b. **Share-alike.** Derivatives must be licensed under this same license, version 1.0 or any later version published by the copyright holder.
 c. **Marking.** A Derivative's documentation must state that it has been modified from the original Green Thumb Design.
 
