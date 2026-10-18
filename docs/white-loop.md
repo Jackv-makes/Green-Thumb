@@ -1,66 +1,59 @@
-# The white-light loop
+# The white light loop
 
-## Symptom
+## What it looks like
 
-With the device disconnected, a button press makes it flash **white**, and it keeps flashing white forever instead of giving up. Only a power cycle (or a connection) stops it.
+With the Plus+ disconnected, you press the button and it starts flashing white, and it never stops on its own. Putting it into sleep mode and waking it back up stops it, and so does power cycling it or connecting it to your phone.
 
-## What the device normally does
+## What it normally does
 
-Pressing the button while disconnected starts a search. The stock behaviour is **nine white blinks, then stop**.
+Normally a press while disconnected starts a search, which shows up as nine white blinks, and then it stops.
 
-## Why a green-only mod loops
+## Why green only mods loop
 
-White is red + green + blue. During each white blink, the green channel's driver is switched on exactly as it is for a real green — same control line, same voltage, same timing. A mod that only watches green can't tell the difference, so it presses the button on every white blink. Each press restarts the search, which produces more white blinks, which produce more presses.
+White is red, green and blue all on together. During each white blink, the green channel gets switched on the exact same way it does for a real green: same control line, same voltage, same timing. A mod that only watches green can't tell the difference, so it presses the button on every white blink. Every press restarts the search, which makes more white blinks, which makes more presses.
 
-<p align="center"><img src="../images/white-loop.svg" alt="The white-light loop: a green-only mod versus Green Thumb" width="760"></p>
+<p align="center"><img src="../images/white-loop.svg" alt="The white light loop: a green only mod versus Green Thumb" width="760"></p>
 
-## How it was confirmed
+## How I confirmed it
 
-On the reference device, Green Thumb's tap circuit *without* its blue inhibit made the white flashing endless. With that circuit's ground lifted (so it couldn't press anything) and everything else identical, the same button press gave **nine white blinks and stopped**. With the blue inhibit in place: nine blinks and stop, every time.
+On my Plus+, Green Thumb's tap circuit without the blue check made the white flashing go on forever. With its ground lifted, so it couldn't press anything, the same press gave nine white blinks and stopped. With the blue check in place, it's nine blinks and done every time.
 
 ## What doesn't fix it
 
-- **A pull-down on the gate/input.** Floating inputs cause their own problem — a press that sticks after the LED goes off — and a pull-down fixes that. But Green Thumb's tap transistor already has a pull-down built in, and without the blue inhibit the circuit still loops. The loop isn't a stuck input; it's a correct response to a green signal that happens to be part of white.
-- **A one-shot on its own.** It turns a hold into a tap, which stops long-press problems, but a tap per white blink is still a press per blink.
+- **A pulldown on the input.** A floating input causes its own problem, where the press sticks after the LED goes off, and a pulldown does fix that. But Green Thumb's tap transistor already has one built in, and without the blue check it still loops. The loop isn't a stuck input. It's the mod doing exactly what it's told on a green signal that happens to be part of white.
+- **A one shot on its own.** Turning a hold into a tap stops long press problems, but a tap on every white blink is still a press on every blink.
 
-## What sometimes appears to fix it: a diode or an optocoupler
+## What sometimes seems to fix it: a diode or an optocoupler
 
-Some MOSFET builds put a diode in the source (ground) leg, and their authors report it stops the white loop. Others have pointed out that the loop mechanism is still present on those devices — pressing the button by hand during the nine white flashes still resets the count — so the diode must be stopping *white* from registering as a press rather than removing the cause.
+Some MOSFET builds put a diode in the ground leg, and the people who built them say it stops the white loop. Others pointed out that the loop is still there on those units, since pressing the button by hand during the nine white flashes still resets the count. So the diode must be stopping white from counting as a press, not getting rid of the cause.
 
-The likely explanation:
+Here's my best guess at what's happening:
 
-- Many devices drive green at reduced PWM duty during white, to balance the colour (green dies are much brighter than red and blue). If this device does, the green signal during white is weaker or chopped compared with pure green.
-- A diode in the source leg means the MOSFET can only pull the button line down to about 0.6–0.7 V — right at the edge of what the MCU accepts as a logic low.
-- Solid green drives the MOSFET hard enough to cross that edge; white's weaker green doesn't, or produces a flickering press that firmware debounce rejects.
+- A lot of devices drive green a bit weaker during white to balance the colour, since green LEDs are much brighter than red and blue. If the Plus+ does this, the green signal during white is weaker than it is for plain green.
+- With a diode in the ground leg, the MOSFET can only pull the button line down to about 0.6 to 0.7 V, which is right on the edge of what the Plus+ counts as a press.
+- Plain green pulls it low enough to count. White's weaker green doesn't, or it flickers and the Plus+ ignores it.
 
-If that's right, the diode works by sitting on a threshold, not by telling white from green. Part-to-part spread, temperature and battery voltage can move that threshold either way — including to the point where pure green stops registering. It's a plausible result on some units, not a reliable fix.
+If that's right, the diode works because it's sitting right on the edge, not because it can actually tell white from green. Differences between parts, temperature and battery level can push that either way, including to the point where plain green stops working too. It can work on some units, but it isn't something I'd rely on.
 
-**Optocouplers wired to ground show the same effect.** Builds that drive an optocoupler (for example a TLP785) straight from the green control pad, with its output from the button to ground, are also reported not to loop on some units. The optocoupler's input LED barely conducts at 0.67–0.86 V, so how hard its output pulls the button depends steeply on how strongly green is being driven. One builder measured about 0.666 V on the green pad normally and up to about 0.86 V during catching. If green is weaker during white, the optocoupler can fail to register white while still registering a catch. It's fragile for the same reasons as the diode, plus the optocoupler's large part-to-part gain spread: the same wiring may loop on one unit and fail to press at all on another. As with the diode, a manual press during the white flashes still resets the count, so the loop mechanism hasn't gone away.
+**Optocouplers wired to ground seem to work the same way.** Builds that run an optocoupler (like a TLP785) straight from the green pad, with its output from the button to ground, are also reported to not loop on some units. The optocoupler's internal LED barely turns on at 0.67 to 0.86 V, so how hard it pulls the button down depends a lot on how strongly green is being driven. One person measured about 0.666 V on the green pad normally and up to about 0.86 V while catching. If green is weaker during white, the optocoupler might not register white but still register a catch. It's fragile for the same reasons as the diode, and optocouplers also vary a lot from one part to the next, so the same wiring might loop on one unit and not press at all on another. Same as with the diode, a manual press during the white flashes still resets the count, so the loop is still there underneath.
 
-A one-shot without an inhibit wouldn't benefit from this effect: it fires on the first edge, PWM'd or not.
+A one shot without the blue check wouldn't get any help from this, since it fires on the very first green signal either way.
 
-To check whether a device PWMs green during white, compare the green control pad on a DC voltmeter in solid green and in a held white; a clearly lower reading in white means it does.
+## What actually fixes it
 
-## What reliably fixes it
+You need a second signal that's different between white and green.
 
-A **second input** that is different between white and green.
+**A blue check (Green Thumb, and the two MOSFET build shared by u/PaperStckz).** White always has blue in it, and the green catch state doesn't. A second transistor on the blue control line holds the press transistor off whenever blue is on. Green on its own taps, and white or cyan does nothing. This only works if blue stays completely off while the Plus+ shows plain green, which it does on mine.
 
-**Blue inhibit — Green Thumb, and the two-MOSFET build shared by u/PaperStckz.**
-White always contains blue; the green "press me" state doesn't. A second transistor driven from the blue channel's control line holds the press transistor's input at ground whenever blue is on. Green alone → tap. White or cyan → nothing.
+**Vibration (the approach credited to vulp_vibes).** Only press while green is on and the vibration motor is running. The Plus+ vibrates when it wants your attention and doesn't vibrate during the search, so the white blinks mostly can't press. People have done this a few ways: putting the press transistor's ground on the motor's negative pad, putting a second transistor in series that's driven by the motor, or wiring a photorelay's output between the button and the motor's negative pad. The photorelay builders report fewer white loops, but not none, since white that happens during a vibration can still press. It also only presses when the Plus+ vibrates, and it won't work if the motor has been removed, which a lot of mods do. Some wirings can let a manual button press feed back into the motor, and some builds add a diode to stop that.
 
-Requirement: the blue control line must read **0 V in the pure-green state**. Some devices add a little blue to their green for colour balance; on those, a blue inhibit would block every press.
+## Why there's a series resistor (white turning magenta)
 
-**Vibration gating — the approach credited to vulp_vibes.**
-Press only while green is on *and* the vibration motor is running. If the device vibrates when it actually wants attention and doesn't vibrate during the search, white blinks never produce a press. Implementations put the press transistor's ground return on the motor's switched pad, put a second transistor in series driven by the motor signal, or wire a photorelay's output between the button and the motor's negative pad (builders of that version report fewer white-light loop issues — fewer, because white that coincides with vibration can still press). Trade-offs: it only works if the device always vibrates at the moments you want a press; turning vibration off also turns auto-press off; and if the motor is low-side switched, some wirings let a manual button press back-feed the motor (the diode in some builds blocks that path).
+If the blue check grabbed Q1's input right at the capacitor, it would stop the loop, but white would look magenta. While the check is on, the capacitor would charge straight from the green driver with nothing limiting it, pulling the green driver's base down for the length of each blink. Green drops out, and red plus blue is magenta.
 
-## Why there is a series resistor: white turning magenta
+Green Thumb puts R2 between the capacitor and the spot where the blue check grabs. That way the check only takes a tiny bit of current from the green line, white stays white, and a green signal on its own still gets through R2 strong enough to tap.
 
-If the blue inhibit clamped the tap transistor's input directly at the coupling capacitor, it would stop the loop but white would look **magenta**. While the clamp is on, the capacitor would charge straight from the green driver's base node with nothing limiting the current, pulling the base below its turn-on voltage for the length of each blink: green drops out, and red + blue = magenta.
+## Things the blue check doesn't cover
 
-Green Thumb puts a series resistor (R2) between the capacitor and the clamp point. The clamp then costs the green driver a negligible current, white stays white, and a lone green edge still reaches the tap transistor through R2 with enough drive to press.
-
-## Limitations of the blue inhibit
-
-- **Green that emerges from white isn't tapped.** If the device goes white → green without a dark gap, green was already high when blue released, so there's no rising edge. On the reference device the "press me" state starts from dark (three green blinks, then solid), so this doesn't arise.
-- **Yellow still taps.** Red + green has no blue in it. If a device used yellow for something that shouldn't be acknowledged, it would need a red inhibit as well.
-- **It can't look ahead.** "Green not followed by another colour" isn't detectable at the moment green turns on. A delay-then-check circuit or a small microcontroller could approximate it; neither is needed on the reference device.
+- **Green that comes straight out of white isn't tapped.** If the Plus+ ever went from white straight to green with no dark gap in between, green would already be on when blue turned off, so there'd be no new green signal to tap on. On my Plus+, the catch state starts from dark (three green blinks, then solid), so this doesn't come up.
+- **It can't see the future.** Green Thumb can't know, the moment green turns on, whether another colour is coming next. A delay or a small microcontroller could get close, but the Plus+ doesn't need it.
