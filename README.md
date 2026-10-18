@@ -57,7 +57,7 @@ You'll see people say a diode or an optocoupler fixes it. On some units it seems
   <img src="images/timing.svg" alt="What the button line sees under each mod when green turns on" width="700">
 </p>
 
-Most of the other switchless mods hold the button down for as long as green is lit. That works, but if green stays on long enough the Plus+ can treat it as a long press, and most of them still loop on white. The single wire mod (with the LED left on the board) is the opposite: it holds the button down whenever green is *off*, which can get the Plus+ stuck and drains the battery. The vibration based mods only press while the motor is running, which cuts down on the white loop, but they can still press if white happens during a vibration and they won't work if the motor has been removed.
+Most of the other switchless mods hold the button down for as long as green is lit. That works, but if green stays on long enough the Plus+ can treat it as a long press, and most of them still loop on white. The single wire mod (with the LED left on the board) is the opposite: it holds the button down whenever green is *off*, which can get the Plus+ stuck and drains the battery. The vibration based mods only press while the Plus+ is sending its vibration signal, which cuts down on the white loop, but they can still press if white happens during a vibration.
 
 Green Thumb taps instead of holding, and it ignores white.
 

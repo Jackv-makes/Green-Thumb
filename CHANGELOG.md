@@ -1,10 +1,10 @@
 # Changelog
 
-## First public release — 2026-10
+## First public release (October 2026)
 
-- One-shot tap: a ~100 ms button press on each green rising edge; nothing while green stays on or turns off.
-- **Blue inhibit:** a second digital transistor on the blue channel's control line blocks the tap whenever blue is on, so white and cyan never press the button. This prevents the white-light loop.
-- Series resistor between the coupling capacitor and the clamp node, so the inhibit doesn't load the green LED (white stays white).
+- Taps the button for about 100 ms each time green turns on, and does nothing while green stays on or turns off.
+- Blue check: a second digital transistor on the blue control line holds the tap off whenever blue is on, so white and cyan never press the button. This is what stops the white light loop.
+- A resistor between the capacitor and the blue check, so the blue check doesn't pull the green LED down and white stays white.
 - Pads: GREEN, BLUE, BTN, GND.
-- Tap points: base nodes of the green and blue LED drivers on the LED board (PMC-WN-SUB-01-DK).
-- Verified on the reference device: green state clears on the first blink; a press while disconnected gives nine white blinks and stops; red or blue alone do nothing; manual presses unaffected; no idle current.
+- Taps the base of the green and blue LED drivers on the LED board (PMC-WN-SUB-01-DK).
+- Tested on my Plus+: green clears on the first blink, a press while disconnected gives nine white blinks and stops, red or blue on their own do nothing, pressing the button by hand works as normal, and there's no drain when idle.

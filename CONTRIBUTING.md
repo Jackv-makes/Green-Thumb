@@ -1,9 +1,9 @@
 # Contributing
 
-Reports and improvements are welcome. A few requests:
+If you've tried Green Thumb or have ideas to improve it, I'd love to hear about it.
 
-- **Device reports.** If you have Green Thumb on a device other than the one documented here, open an issue with: device name, which board/pad was tapped, the voltage on the green and blue control pads with each colour on and off (including the blue pad in the pure-green state), the button-line idle voltage, whether a tap vs a hold behave differently, and how many white blinks a press gives while disconnected. That's what someone else will need to repeat it.
-- **Docs.** Corrections and clearer explanations are the most useful contribution; the design files themselves are not published here.
-- **License.** By contributing you agree your contribution is licensed under the Green Thumb Hardware License in `LICENSE.md`.
+- **How it went on your unit.** Open an issue and let me know whether green catches tap on their own, how many white blinks you get when you press it while disconnected, and anything odd you noticed. If you happen to have voltage readings from the green and blue pads, those help too.
+- **Docs.** Corrections and clearer explanations are always welcome. The design files themselves aren't published here.
+- **License.** By contributing, you agree your contribution is covered by the Green Thumb Hardware License in [LICENSE.md](LICENSE.md).
 
-Please don't open issues asking for the design files, bill of materials, or where to buy bare boards; see the license.
+Please don't open issues asking for the design files, the parts list, or where to buy bare boards. See the license.

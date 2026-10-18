@@ -1,38 +1,28 @@
-# Testing and troubleshooting
+# Testing
 
-## Expected readings (reference device, meter black lead on ground)
+After soldering, here's how I check that everything's working. You don't need any tools for this, just the Plus+ and your phone.
 
-| Point | Idle / colour off | Colour on |
-|---|---|---|
-| GREEN pad | 0 V | ~0.8 V while green (or white/yellow/cyan) is lit |
-| BLUE pad | 0 V | ~0.8 V while blue (or white/cyan) is lit — **0 V in pure green** |
-| BTN pad | ~2.8 V | 0 V for ~100 ms after a green-from-dark edge, then ~2.8 V |
+1. **Turn it on.** It should start up like normal. Press the button yourself, both a quick tap and a hold, and make sure both still work the way they did before.
+2. **Catch something.** When it lights up green, it should tap the button on its own, usually on the first blink. A quick flicker of green is normal, since the tap often happens before the LED is fully on.
+3. **Check the white loop.** Disconnect it from your phone and press the button once. You should get nine white blinks and then it stops. The white should look white, not purple or yellow.
+4. **Use it for a while.** It should tap when green or yellow comes on, and do nothing on red, blue or white.
 
-## Symptoms
+## If something's off
 
-**Endless white blinking after a press while disconnected.**
-- That's the white-light loop, which means the blue inhibit isn't acting. Reflow the BLUE joint; with white showing, the BLUE pad must read ~0.8 V. See [white-loop.md](white-loop.md).
+**It keeps blinking white after you press it while disconnected.**
+That's the white light loop, which means the blue check isn't working. Reflow the BLUE joint. You can stop the blinking by putting the Plus+ to sleep and waking it back up. See [white-loop.md](white-loop.md).
 
-**Nothing happens on green.**
-- The GREEN pad reads 0 V with green lit → the GREEN joint isn't making contact. Reflow it.
-- Check the GND joint.
-- BTN drops but the device ignores it → the tap is too short for this firmware; report it with the device details.
+**Nothing happens when it turns green.**
+Reflow the GREEN and GND joints.
 
-**White looks magenta (green missing) during white blinks.**
-- Green is being pulled down while blue is on, which points to a fault on the flex near the inhibit. Background: [white-loop.md](white-loop.md#why-there-is-a-series-resistor-white-turning-magenta).
+**White looks magenta (purple) during the white blinks.**
+Green is being pulled down while blue is on, which usually means a problem on the flex near the blue check. There's more background in [white-loop.md](white-loop.md#why-theres-a-series-resistor-white-turning-magenta).
 
-**White looks yellow or orange (blue missing).**
-- The blue line is being pulled down — usually a solder bridge from BLUE to GND.
+**White looks yellow or orange.**
+Blue is being pulled down, usually from a solder bridge between BLUE and GND.
 
-**Button appears stuck / device enters odd modes.**
-- BTN sits at 0 V constantly → look for a solder bridge from BTN to GND. Green Thumb itself never holds the line.
+**The button acts like it's stuck, or the Plus+ goes into odd modes.**
+Look for a solder bridge between BTN and GND. Green Thumb never holds the button down on its own.
 
-**Taps on yellow.**
-- Expected: yellow is red + green with no blue. It only matters if the device uses yellow in a state that shouldn't be acknowledged.
-
-**Device resets or misbehaves when connected.**
-- Check the GND joint and look for bridges between neighbouring pads.
-
-## Bench test without the device
-
-Feed GND, and a 3 V pull-up (through ~10 kΩ) to BTN. Touch the GREEN pad to ~0.8 V from a divider: BTN drops to near 0 V for about 100 ms and returns. Repeat with the BLUE pad also held at ~0.8 V: BTN must not move.
+**It resets or acts strange after installing.**
+Check the GND joint and look for solder bridges between any of the pads.

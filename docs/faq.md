@@ -1,46 +1,46 @@
 # FAQ
 
-**Why did my device flash white forever?**
-The white-light loop. White contains green, so a mod that only watches green presses on every white blink, and each press restarts the search. Green Thumb's blue inhibit prevents it. Full explanation in [white-loop.md](white-loop.md).
+**Why does my Plus+ flash white forever?**
+That's the white light loop. White has green in it, so a mod that only watches green presses the button on every white blink, and each press restarts the search. Putting it to sleep and waking it up stops it, and so does a power cycle. Green Thumb's blue check keeps it from happening in the first place. More in [white-loop.md](white-loop.md).
 
-**Does a pull-down resistor fix the white loop?**
-No. A pull-down fixes a *floating* input that keeps pressing after the LED goes off. Green Thumb's tap transistor has a pull-down built in, and without the blue inhibit the circuit still loops. The loop is a correct response to a green signal that's part of white; only a second input — blue or vibration — can tell them apart.
+**Does a pulldown resistor fix the white loop?**
+No. A pulldown fixes an input that's floating and keeps pressing after the LED turns off. Green Thumb's tap transistor already has one built in, and without the blue check it still loops. The loop happens because the mod is doing exactly what it's told on a green signal that's part of white. Only a second signal, like blue or vibration, can tell them apart.
 
 **Does the diode some mods use fix it?**
-Some builders report it does. The likely reason is that green is driven more weakly (PWM) during white, and a diode in the source leg leaves the MOSFET only just able to pull the button low — enough for solid green, not for white. That depends on margins that vary between parts, temperature and battery level, so treat it as unreliable. The loop mechanism itself is still there: a manual press during the white flashes still resets the count. In vibration-gated builds a diode can have a different job: blocking a back-feed path into the motor. Details in [white-loop.md](white-loop.md).
+Some people say it does. My best guess is that green is driven a little weaker during white, and the diode leaves the MOSFET only just able to pull the button down, which is enough for plain green but not for white. That depends on things that change between parts, temperature and battery level, so I wouldn't count on it. The loop is still there underneath too, since a manual press during the white flashes still resets the count. In vibration based builds a diode can also have a different job: stopping a manual press from feeding back into the motor. More in [white-loop.md](white-loop.md).
 
 **Some people say their optocoupler mod doesn't loop on white. Why?**
-Most likely margin. The optocoupler's input barely conducts at the green pad's ~0.67–0.86 V, and green appears to be driven more strongly in some states than others, so on some units the part registers a catch but not white. It varies with the part and the unit, so it isn't a dependable fix. See [white-loop.md](white-loop.md).
+Probably the same reason as the diode. The optocoupler barely turns on at the green pad's 0.67 to 0.86 V, and green seems to be driven stronger in some states than others, so on some units it registers a catch but not white. It changes from part to part and unit to unit, so it isn't something to rely on.
 
 **What happens when blue turns off?**
-Nothing. Green Thumb only taps on a green *rising* edge while blue is off. If blue turns off while green stays on (white → green), there's no new edge, so no tap.
+Nothing. Green Thumb only taps when green turns on while blue is off. If blue turns off while green stays on, there's no new green signal, so no tap.
 
-**Why not gate on vibration instead of blue?**
-It works if the device always vibrates when it wants a press and never during the search, and if you tap the motor's switched side. But auto-press then depends on vibration being enabled, and the press length is whatever the vibration burst is. Blue gating keeps auto-press independent of vibration.
+**Why not use vibration instead of blue?**
+It can work, as long as the Plus+ always vibrates when it wants a press and never during the search, and you're tapping the motor's switched side. But it only presses at moments the Plus+ tries to vibrate, and the press is as long as the vibration. Using blue means Green Thumb doesn't depend on the vibration signal at all.
 
-**Can it trigger only on green that isn't followed by another colour?**
-Not at the moment green turns on — the circuit can't see the future. It could *wait* (only press if green stays on alone for some time) with a delay stage or a small microcontroller. Not needed on the reference device.
+**Can it only tap on green that isn't followed by another colour?**
+Not at the moment green turns on, since it can't see the future. It could wait and only press if green stays on by itself for a while, using a delay or a small microcontroller, but the Plus+ doesn't need that.
 
-**Does it trigger on yellow or cyan?**
-Yellow (no blue) yes; cyan (has blue) no.
+**Does it tap on yellow or cyan?**
+It taps on yellow, which is what you want. It doesn't tap on cyan, since cyan has blue in it.
 
 **Is Green Thumb a MOSFET mod?**
-No. Both transistors are bipolar digital transistors with their pull-downs built in and a threshold that suits the 0.8 V tap.
+No. Both transistors are digital transistors (regular transistors with their resistors built in). They act like the MOSFET mods, but the pulldown is already built in and they turn on at a voltage that suits the 0.8 V green pad.
 
-**Can it press before the LED flashes?**
-Effectively yes. It responds to the driver's control signal, which rises before the die is visibly lit, especially during a PWM fade-in.
+**Can it press before the LED lights up?**
+Pretty much. It reacts to the green control signal, which turns on before you can actually see the LED, especially when the LED fades in.
 
 **What if I press the button while Green Thumb is tapping?**
-Nothing unusual. Both pull the same line low; the MCU sees one press. Manual holds behave exactly as stock.
+Nothing weird happens. Both pull the same line down, so the Plus+ just sees one press. Holding the button down works the same as stock.
 
-**Does it use battery?**
-Not at rest. A tap costs tens of microamps for ~100 ms.
+**Does it drain the battery?**
+Not when it's idle. A tap only uses a tiny bit of current for about 100 ms.
 
 **Why is the "Green LED +" pad only 0.8 V?**
-It isn't the LED's anode; it's the base of the green driver transistor, clamped at one base-emitter drop.
+Because it isn't the LED's positive side. It's the base of the green driver transistor, and the base of a transistor that's switched on always sits at about 0.7 to 0.8 V.
 
 **Can I build my own?**
-The design files and parts list aren't published; see LICENSE.md. The docs explain the principle so the behaviour can be understood and compared.
+The design files and parts list aren't published (see [LICENSE.md](../LICENSE.md)). The docs are here so you can understand how it works and how it compares.
 
 **Why aren't there kits or bare boards?**
-See LICENSE.md. Green Thumb is offered installed on a device or as an installation service, not as a standalone board or kit.
+The license allows a Plus+ with Green Thumb installed to be sold, and installing it as a service is fine too, but the board can't be sold on its own, as a kit, or as a bare PCB. See [LICENSE.md](../LICENSE.md).

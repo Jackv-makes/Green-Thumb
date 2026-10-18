@@ -1,57 +1,56 @@
-# How Green Thumb works
+# How it works
 
-## The signals it listens to
+## The signals
 
-Each die of the device's RGB LEDs has its own driver: an NPN transistor on the LED board, its base driven from the MCU through a resistor, its collector on the die's cathode. When the MCU wants a colour, it drives that channel's base; the transistor pulls the cathode to ground and the die lights.
+Each colour of each RGB LED on the Plus+'s LED board has its own little driver transistor. The main board turns a colour on by sending a signal through a resistor into that transistor's base, and the transistor then turns the LED on.
 
-A driven NPN base sits at about 0.7–0.8 V regardless of what feeds it — the base-emitter junction clamps it. When the MCU releases the line, the base falls to 0 V. So each base node is a clean "this colour is being driven" signal with a 0 → 0.8 V swing. On the reference board the green and blue base nodes are exposed on adjacent pads on the Side B edge. (Community photos label the green one "Green LED +", which is misleading — it isn't the LED's anode.)
+The base of a transistor that's switched on always sits at about 0.7 to 0.8 V, no matter what's feeding it. When the colour turns off, it drops to 0 V. That makes each base a clean on and off signal for its colour. On the LED board, the green and blue bases come out to two pads sitting right next to each other on the Side B edge. You'll see the green one called "Green LED +" in some photos, but it isn't actually the LED's positive side.
 
-Green Thumb taps the **green** base node (GREEN pad) to know when to press, and the **blue** base node (BLUE pad) to know when not to.
+Green Thumb uses the GREEN pad to know when to press, and the BLUE pad to know when not to.
 
 ## The circuit
 
 <img src="../images/schematic.svg" alt="Green Thumb schematic" width="760">
 
-**Q1 is a digital transistor** — an NPN with its bias resistors in the package, one in series with the base and one from base to emitter. A fraction of a volt on its input turns it on, pulling the button line to ground. With no input, the internal pull-down holds it off; it can't float. It was chosen for a turn-on point below the 0.8 V available.
+**Q1** is a digital transistor. It's a regular NPN transistor with two resistors built into the package: one in series with the input, and one from the input to ground that keeps it off when nothing is driving it. A fraction of a volt on its input turns it on, which pulls the button line to ground. I picked it because it turns on below the 0.8 V that's available on the pad.
 
-**C1 turns a level into a pulse.** When the GREEN pad steps from 0 to 0.8 V, the step passes through C1 to Q1's input and Q1 turns on. C1 then charges, the input voltage decays, and once it drops below Q1's turn-on point — after roughly 100 ms — Q1 releases. One tap, however long green stays on. When green turns off, C1 passes a *negative* step, well within the part's reverse rating, and Q1 stays off.
+**C1** turns the green signal into a short pulse. A capacitor passes changes but blocks a steady voltage. When the GREEN pad jumps from 0 to 0.8 V, that jump passes straight through C1 and turns Q1 on. C1 then charges up, the voltage at Q1's input fades away, and after roughly 100 ms Q1 lets go. That gives you one tap no matter how long green stays on. When green turns off, C1 passes a drop instead, which just keeps Q1 off.
 
-**R1 drains C1** from the GREEN-pad side so it's reset within a fraction of a second and ready for the next rising edge. It also limits how fast taps can repeat.
+**R1** drains C1 after each tap so it's reset and ready for the next one. It also sets how quickly taps can repeat.
 
-**Q2 is the blue inhibit,** another digital transistor. Its input is the BLUE pad; its output is tied to Q1's input (the clamp node). Whenever blue is on, Q2 holds Q1's input at ground, so any green edge that arrives at the same time goes nowhere.
+**Q2** is the blue check, another digital transistor. Its input is the BLUE pad and its output connects to Q1's input. Whenever blue is on, Q2 holds Q1's input at ground, so a green signal that shows up at the same time can't do anything.
 
-**R2 sits between C1 and the clamp node.** Without it, Q2 clamping during white would make C1 charge directly from the green driver's base, starving the driver for the length of the blink: green would drop out and white would look magenta. With R2 in the path, the clamp draws only a small current from the green line, and a lone green edge still drives Q1 through R2 with plenty of margin.
+**R2** sits between C1 and Q1. Without it, Q2 holding Q1's input down during white would make C1 charge straight from the green driver. That starves the green LED for the length of the blink, and white would look magenta. With R2 in place, the blue check only takes a tiny bit of current from the green line, and a green signal on its own still has plenty of strength to turn Q1 on.
 
-## What the button sees
+## What happens with each colour
 
-| Event | Result |
+| What the LED does | What Green Thumb does |
 |---|---|
-| Green turns on, blue off | Tap (~100 ms) |
+| Green turns on, blue is off | Taps the button for about 100 ms |
+| Yellow turns on (red and green) | Taps the button, same as green |
 | Green stays on | Nothing more |
 | Green turns off | Nothing |
-| White or cyan blink (green + blue together) | Nothing — Q2 is already clamping when the green edge arrives |
-| Blue turns off, green still on | Nothing — C1 charged through R2 during the clamp, so there's no rising edge left to pass |
-| Blue turns off, green off | Nothing |
-| Red or blue alone | Nothing |
-| Yellow (red + green) | Tap |
-| Fast green blinks | One tap per edge, up to the reset-rate limit |
+| White or cyan (green and blue together) | Nothing, because Q2 is already holding Q1 off |
+| Blue turns off while green stays on | Nothing, because there's no new green signal to pass |
+| Red or blue on their own | Nothing |
+| Green blinks quickly | One tap per blink, as fast as R1 lets it reset |
 
-Green and blue switch on within microseconds of each other during white. If green wins that race by a hair, Q1 may twitch for microseconds — far shorter than any firmware debounce.
+During white, green and blue switch on within microseconds of each other. If green beats blue by a hair, Q1 might twitch for a few microseconds, but that's way shorter than anything the Plus+ would count as a press.
 
-The press usually lands within the first PWM cycles of a fade-in, before the die is visibly lit.
+The tap usually happens right as the LED starts fading in, so it often lands before you can even see green.
 
-<img src="../images/white-loop.svg" alt="The white-light loop: a green-only mod versus Green Thumb" width="760">
+<img src="../images/white-loop.svg" alt="The white light loop: a green only mod versus Green Thumb" width="760">
 
-## What it doesn't affect
+## What it doesn't change
 
-- **Manual presses.** Q1 and the physical button are in parallel on the same line. When you press, the line is already low; nothing Green Thumb does changes it. When Q1 is off it leaks nanoamps.
-- **The LEDs.** Both taps draw microamps from nodes the MCU drives with milliamps. No dimming, no colour shift, no timing change.
-- **Battery.** Nothing flows at rest. A tap costs tens of microamps for ~100 ms.
+- **Pressing the button yourself.** Q1 and the real button are on the same line, so when you press it the line is already low and Green Thumb doesn't change anything.
+- **The LEDs.** Both pads only give up a tiny bit of current, so the LEDs look and behave the same.
+- **Battery life.** Nothing flows when it's idle. A tap only uses a tiny amount of current for about 100 ms.
 
-## Measured on the reference device
+## What I measured on my Plus+
 
-- Green and blue control pads: 0.8 V with the channel driven, 0 V otherwise.
-- Blue control pad in the pure-green state: 0 V (the inhibit requirement).
-- Button line: pulled up internally by the MCU, ~2.8 V idle, 0 V pressed.
-- A hand *tap* in the green state clears it; a hand *hold* cycles modes and then powers down.
-- Press while disconnected, no mod: nine white blinks, stop. Same circuit without the blue inhibit: endless. Green Thumb: nine and stop, white stays white.
+- The GREEN and BLUE pads sit at about 0.8 V when their colour is on and 0 V when it's off.
+- The BLUE pad stays at 0 V when the Plus+ shows plain green, which is what lets the blue check work.
+- The button line sits at about 2.8 V and drops to 0 V when it's pressed.
+- Tapping the button while it's green works like it should. Holding it down cycles through modes and eventually turns it off.
+- Pressing the button while disconnected gives nine white blinks and then it stops. Without the blue check, it blinks white until you put it to sleep. With Green Thumb, it's nine and done, and white stays white.

@@ -1,95 +1,95 @@
 # Switchless mods compared
 
-> **Note:** this list isn't exhaustive. Other mods exist, including ones that use switches; only switchless mods are compared here.
+> **Note:** this list isn't complete. There are also mods that use switches, and I'm only comparing switchless mods here.
 
-All of these react to the green LED channel. They differ in *where* they sense it, *what* they do to the button line, and whether they can tell green from white.
+All of these react to the green LED. The differences are where they pick up the green signal, what they do to the button, and whether they can tell green apart from white.
 
-Two failure modes matter on this device:
+There are two problems that matter on the Plus+:
 
-- **Long-press modes.** Holding the button for seconds cycles through modes and can power the device down. Any mod that holds the button for as long as green is lit risks this.
-- **The white-light loop.** White contains green; a mod that only watches green presses on every white blink, restarting the search indefinitely. See [white-loop.md](white-loop.md).
+- **Long presses.** Holding the button down for a few seconds cycles through modes and can turn the Plus+ off. Any mod that holds the button down for as long as green is on can run into this.
+- **The white light loop.** White has green in it, so a mod that only watches green presses on every white blink and keeps restarting the search. See [white-loop.md](white-loop.md).
 
 <p align="center"><img src="../images/timing.svg" alt="What the button line sees under each mod when green turns on" width="700"></p>
 
 ## 1. Single wire
 
-**Wiring:** a bare wire from a "green" pad on the LED board to the button line.
+**Wiring:** a plain wire from a "green" pad on the LED board to the button.
 
-**What it does:** the logic is inverted. The green control line is low whenever green is **off**, so the button reads *pressed* most of the time and *released* when green comes on. It appears to work because many firmwares act on the release edge.
+**What it does:** it works backwards. The green control line is low whenever green is off, so the button reads as pressed most of the time and released when green comes on. It seems to work because a lot of firmware reacts when the button is let go.
 
-**Failure modes:**
-- *Stuck-button error loop.* Any time the firmware checks for a released button — wake, sync, charge — it finds one that's been held for minutes. The usual result is a fixed-interval red blink until power-cycle; red contains no green, so the wire never lets go.
-- *White-light loop.* Every white blink is a release-then-press.
-- *Battery.* The button's pull-up (~13 kΩ from 2.8 V) is shorted through the MCU pin all day: ~200 µA continuous, plus whatever a "held" button does to sleep.
-- *Back-feeding* the green driver's base.
+**Problems:**
+- *Getting stuck.* Any time the Plus+ checks whether the button has been let go, like when it wakes up or syncs, it finds a button that's been held down for minutes. That usually shows up as a red blink on a fixed timer until you power cycle it. Red has no green in it, so the wire never lets go.
+- *White light loop.* Every white blink is a release and then a press.
+- *Battery.* The button's pullup (about 13 kΩ from 2.8 V) is shorted to ground all day, so it draws about 200 µA nonstop, plus whatever a held button does to sleep.
+- *Feeding back* into the green driver.
 
-## 2. Optocoupler / photorelay (TLP785, G3VM-61G3 and similar)
+**Variant: LED removed.** Some people remove the RGB LED and solder the wire to the empty green pad instead. That pad connects straight to the board's green driver transistor, so the driver itself pulls the button low while green is on. That fixes the backwards logic, and removing the LED stops the LED's power from leaking into the button line. The downsides are that one of the four LEDs is gone for good, it holds the button for as long as green is on, and it still loops on white.
 
-Two kinds of part are used, and they behave alike here:
-- **Phototransistor optocouplers** (TLP785 and similar): the output is a transistor, collector to the button point, emitter to ground.
-- **Photorelays** (G3VM-61G3, AQY212S, TLP172AM and similar): the output is a MOSFET contact across the button.
+## 2. Optocoupler or photorelay (TLP785, G3VM-61G3 and similar)
 
-**Wiring:** the part's input LED driven from the green channel — either between a positive rail and the green driver's collector, or straight from the green control pad (the driver's base node) to ground; its output across the button.
+There are two kinds of parts people use, and they act about the same here:
+- **Optocouplers with a transistor output** (TLP785 and similar): the output transistor goes from the button to ground.
+- **Photorelays** (G3VM-61G3, AQY212S, TLP172AM and similar): the output is a switch across the button.
 
-**What it does:** correct polarity, fully isolated. The button is held for as long as the green channel is being driven.
+**Wiring:** the part's internal LED is driven by green, either from a positive rail to the green driver's collector, or straight from the green pad to ground. The output goes across the button.
 
-**Failure modes:**
-- Held press (long-press modes).
-- Collector-wired versions put the relay's LED in the green die's current path, so green often dims or drops out.
-- Base-pad versions run the input from a signal of only ~0.67–0.86 V. The infrared LED inside needs about 1.1 V to conduct properly, so it barely lights: builders report that only low-trigger-current photorelays work, and less reliably on weaker boards.
-- Large part-to-part spread. A phototransistor optocoupler's gain (current transfer ratio) varies widely — roughly 50–600% for the TLP785 — so the same wiring can press reliably on one unit and not at all on another.
-- It watches green only, so with its output to ground it should loop on white. Some builders report that it doesn't on their units; that's most likely a margin effect rather than a fix — see [white-loop.md](white-loop.md#what-sometimes-appears-to-fix-it-a-diode-or-an-optocoupler).
+**What it does:** it presses the right way and it's fully isolated. The button is held down for as long as green is on.
 
-**Variant: output to the motor's negative pad.** Some builds connect the output between the button and the vibration motor's negative pad instead of ground, and report fewer white-light loop issues. That pad only reaches ground while the motor is running, so it can only press while the device is vibrating; white search blinks don't vibrate, so most of them can't press. It's fewer, not none — any white that coincides with vibration can still press. This makes it a vibration-gated mod (see 5), with the same trade-offs.
+**Problems:**
+- It's a hold, so long presses can happen.
+- The versions wired to the green driver's collector put the part's LED in the green LED's path, so green often gets dim or stops lighting.
+- The versions wired to the green pad are running off only 0.67 to 0.86 V. The LED inside needs about 1.1 V to really turn on, so it barely lights. People report that only parts that trigger at very low current work, and they're less reliable on weaker boards.
+- They vary a lot from part to part. A TLP785's gain can be anywhere from about 50% to 600%, so the same wiring can work great on one unit and not at all on another.
+- It only watches green, so with the output going to ground it should loop on white. Some people say theirs doesn't, but that's most likely because it's right on the edge, not because it's a real fix. See [white-loop.md](white-loop.md#what-sometimes-seems-to-fix-it-a-diode-or-an-optocoupler).
 
-## 3. MOSFET with pull-down
+**Variant: output to the motor's negative pad.** Some builds connect the output between the button and the vibration motor's negative pad instead of ground, and report fewer white loop issues. That pad only connects to ground while the Plus+ is sending its vibration signal, so it can only press while the Plus+ is trying to vibrate. The white blinks don't vibrate, so most of them can't press. It's fewer, not none, since white that happens during a vibration can still press. This makes it a vibration based mod (see 5).
 
-**Wiring:** gate to the green signal through a series resistor, pull-down from gate to ground, drain to the button, source to ground.
+## 3. MOSFET with pulldown
 
-**What it does:** correct polarity, holds while green is on. The pull-down fixes the floating-gate "stuck press" that earlier versions suffered.
+**Wiring:** gate to the green signal through a resistor, a pulldown from gate to ground, drain to the button, source to ground.
 
-**Failure modes:** still a hold; still loops on white. From the ~0.8 V base pad only very-low-threshold MOSFETs fire, and part-to-part spread decides whether a given one does — one reason some builds added a diode and others didn't. Some diode builds are also reported to avoid the white loop; see [white-loop.md](white-loop.md) for why that's probably a margin effect rather than a fix.
+**What it does:** presses the right way and holds while green is on. The pulldown fixes the stuck press that came from the gate floating in earlier builds.
 
-## 4. MOSFET with blue inhibit (u/PaperStckz)
+**Problems:** still a hold, and still loops on white. From the 0.8 V green pad, only MOSFETs that turn on at a really low voltage will work, and it comes down to the individual part whether yours does. That's one reason some builds added a diode and others didn't. Some diode builds are also reported to avoid the white loop; see [white-loop.md](white-loop.md) for why that's probably just being on the edge rather than a fix.
 
-**Wiring:** as #3, plus a second MOSFET gated from the blue signal, clamping the first MOSFET's gate to ground. Series resistors on both gates.
+## 4. MOSFET with a blue check (u/PaperStckz)
 
-**What it does:** holds while green is on, but not while blue is on. White can't trigger it. The author reported no white loops; Green Thumb's testing indicates the inhibit, not the pull-down, is what prevents them.
+**Wiring:** like 3, plus a second MOSFET on the blue signal that holds the first MOSFET's gate at ground. Both gates have resistors in series.
 
-**Failure modes:** still a hold, so long-press exposure remains.
+**What it does:** holds while green is on, but not while blue is on, so white can't trigger it. The author didn't see any white loops, and my testing points to the blue check being what stops them, not the pulldown.
 
-## 5. Vibration-gated (credited to vulp_vibes)
+**Problems:** still a hold, so long presses can still happen.
 
-**Wiring variants:**
-- MOSFET gate on green, **source on the vibration motor's switched pad** instead of ground. The MOSFET only has a ground return while the motor runs.
-- Two transistors in series in the button path, one driven by green and one by the motor signal.
+## 5. Vibration based (credited to vulp_vibes)
+
+**Wiring:** there are a few versions:
+- A MOSFET with its gate on green and its source on the vibration motor's switched pad instead of ground, so it only has a path to ground while the vibration signal is on.
+- Two transistors in series on the button, one driven by green and one by the motor.
 - A photorelay driven by green, with its output between the button and the motor's negative pad (see the variant under 2).
-- A diode in the ground path in some builds; where the source sits on a motor pad, a diode there blocks a back-feed path through the MOSFET's body diode that can otherwise buzz the motor on manual presses.
+- Some builds add a diode in the ground path. When the source is on a motor pad, the diode stops a manual button press from feeding back and buzzing the motor.
 
-**What it does:** presses only while green **and** vibration are both on — an AND gate. The device vibrates when it wants attention and not during the search, so white blinks mostly don't trigger it; white that coincides with vibration still can, so loops are reduced rather than eliminated. Vibration bursts are short, so the press is naturally short too.
+**What it does:** presses only while green and vibration are both on. The Plus+ vibrates when it wants your attention and not during the search, so the white blinks mostly don't trigger it. White that happens during a vibration still can, so loops are cut down rather than gone. Vibrations are short, so the press ends up short too.
 
-**Failure modes and trade-offs:**
-- Only works if the motor's switched side is the pad you tap. Measure it idle: ~2.8 V means low-side switched (the source-on-motor method works); 0 V means it's just ground (that method does nothing).
-- Auto-press only works with vibration enabled and only at moments the device vibrates.
-- Press length is whatever the vibration burst is; there's no control over it.
+**Problems:**
+- It only works if the pad you're using is the motor's switched side. On some boards the motor's negative side is just ground, and then the trick does nothing.
+- It only presses at moments the Plus+ tries to vibrate. That still works with the motor removed, since the board keeps sending the vibration signal to the motor pads either way.
+- The press lasts as long as the vibration, with no way to control it.
 
 ## 6. Green Thumb
 
-Base-node voltage tap → series capacitor → digital transistor → button: one ~100 ms tap on each green rising edge, nothing at rest, no long-press risk, no stuck button. Plus a blue inhibit: a second digital transistor on the blue control line clamps the tap transistor's input whenever blue is on, behind a series resistor so the clamp doesn't load the green LED. One tap on green-from-dark; nothing on white, cyan, red or blue.
+The GREEN pad goes through a capacitor into a digital transistor that presses the button, so you get one tap of about 100 ms each time green turns on, nothing when it's idle, no long press risk and no stuck button. A second digital transistor on the BLUE pad holds the first one off whenever blue is on, with a resistor in between so it doesn't pull the green LED down. It taps when green or yellow turns on, and does nothing on white, cyan, red or blue.
 
 ## Summary
 
-| | Single wire | Optocoupler / photorelay | MOSFET + R | MOSFET + blue inhibit | Vibration-gated | **Green Thumb** |
+| | Single wire (LED left on) | Optocoupler or photorelay | MOSFET with pulldown | MOSFET with blue check | Vibration based | **Green Thumb** |
 |---|---|---|---|---|---|---|
-| Polarity | inverted | correct | correct | correct | correct | correct |
-| Duration | hold (while off) | hold | hold | hold | vibration burst | tap |
-| Long-press risk | yes | yes | yes | yes | low | no |
-| White-light loop | likely | usually; some units report none (by margin); fewer if output goes to motor − | yes | no | reduced | no |
-| Stuck-button loop | yes | no | no | no | no | no |
-| Idle drain | ~200 µA | 0 | 0 | 0 | 0 | 0 |
-| Green brightness | affected | often dimmed | unaffected | unaffected | unaffected | unaffected |
-| Needs vibration on | no | no | no | no | yes | no |
-| Fires from 0.8 V pad | by accident | marginal (sensitive parts only; varies unit to unit) | marginal | marginal | marginal | yes |
-| Wires to device | 1 | 4 | 3 | 4 | 3–4 | 4 |
-
-The one thing Green Thumb gives up versus the hold-type mods is the ability to *hold* the button on purpose; a device that needs a hold is better served by mod 4 or 5.
+| Presses the right way | no, it's backwards | yes | yes | yes | yes | yes |
+| How long it presses | holds while green is off | holds | holds | holds | as long as the vibration | tap |
+| Long press risk | yes | yes | yes | yes | low | no |
+| White light loop | likely | usually, though some units report none (on the edge), and fewer if the output goes to the motor's negative pad | yes | no | fewer | no |
+| Gets stuck | yes | no | no | no | no | no |
+| Battery drain when idle | about 200 µA | none | none | none | none | none |
+| Green LED affected | feeds back | often dimmed | no | no | no | no |
+| Only presses while vibrating | no | no | no | no | yes | no |
+| Works from the 0.8 V green pad | by accident | barely (sensitive parts only, varies by unit) | barely | barely | barely | yes |
+| Wires to the Plus+ | 1 | 4 | 3 | 4 | 3 or 4 | 4 |

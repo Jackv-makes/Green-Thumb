@@ -1,13 +1,13 @@
 <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 800 380" width="800" height="380" font-family="Helvetica, Arial, sans-serif">
 <rect width="800" height="380" fill="#ffffff"/>
-<text x="400" y="28" text-anchor="middle" font-size="18" font-weight="bold" fill="#222">The white-light loop</text>
+<text x="400" y="28" text-anchor="middle" font-size="18" font-weight="bold" fill="#222">The white light loop</text>
 <text x="400" y="48" text-anchor="middle" font-size="12" fill="#666">Pressing the button while disconnected starts a search: nine white blinks, then stop.</text>
 <text x="12" y="88" font-size="12" fill="#1D9E75">green channel</text>
 <polyline points="110,95 140,95 140,71 170,71 170,95 208,95 208,71 238,71 238,95 276,95 276,71 306,71 306,95 344,95 344,71 374,71 374,95 412,95 412,71 442,71 442,95 480,95 480,71 510,71 510,95 548,95 548,71 578,71 578,95 616,95 616,71 646,71 646,95 684,95 684,71 714,71 714,95 760,95" fill="none" stroke="#1D9E75" stroke-width="3"/>
 <text x="12" y="138" font-size="12" fill="#378ADD">blue channel</text>
 <polyline points="110,145 140,145 140,121 170,121 170,145 208,145 208,121 238,121 238,145 276,145 276,121 306,121 306,145 344,145 344,121 374,121 374,145 412,145 412,121 442,121 442,145 480,145 480,121 510,121 510,145 548,145 548,121 578,121 578,145 616,145 616,121 646,121 646,145 684,145 684,121 714,121 714,145 760,145" fill="none" stroke="#378ADD" stroke-width="3"/>
 <text x="12" y="132" font-size="10" fill="#666"> </text>
-<text x="12" y="182" font-size="11" fill="#222">BTN,</text><text x="12" y="196" font-size="11" fill="#222">green-only mod</text>
+<text x="12" y="182" font-size="11" fill="#222">BTN,</text><text x="12" y="196" font-size="11" fill="#222">green only mod</text>
 <polyline points="110,181 140,181 140,205 150,205 150,181 208,181 208,205 218,205 218,181 276,181 276,205 286,205 286,181 344,181 344,205 354,205 354,181 412,181 412,205 422,205 422,181 480,181 480,205 490,205 490,181 548,181 548,205 558,205 558,181 616,181 616,205 626,205 626,181 684,181 684,205 694,205 694,181 760,181" fill="none" stroke="#C62828" stroke-width="3"/>
 <text x="440" y="226" text-anchor="middle" font-size="11" fill="#C62828">a press on every blink → the search restarts → blinks never reach nine</text>
 <text x="12" y="252" font-size="11" fill="#222">BTN,</text><text x="12" y="266" font-size="11" fill="#222">Green Thumb</text>
@@ -23,6 +23,6 @@
 <text x="631" y="64" text-anchor="middle" font-size="10" fill="#888">8</text>
 <text x="699" y="64" text-anchor="middle" font-size="10" fill="#888">9</text>
 <rect x="20" y="304" width="760" height="62" rx="8" fill="#f4f4f4" stroke="#ccc"/>
-<text x="40" y="326" font-size="12" fill="#222">A pull-down can't tell white from green. A diode or threshold only does so by margin, if white's green is weaker (PWM).</text>
-<text x="40" y="348" font-size="12" fill="#222">A reliable fix needs a second input — blue (Green Thumb) or vibration (vibration-gated mods).</text>
+<text x="40" y="326" font-size="12" fill="#222">A pulldown can't tell white from green. A diode or optocoupler only does it by being right on the edge, if white's green is weaker.</text>
+<text x="40" y="348" font-size="12" fill="#222">A reliable fix needs a second signal: blue (Green Thumb) or vibration (vibration based mods).</text>
 </svg>

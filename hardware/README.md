@@ -1,18 +1,17 @@
-# Hardware reference
+# Hardware notes
 
-The Green Thumb design files, bill of materials and assembly details are not published; see `LICENSE.md`.
+The design files, bill of materials and assembly details for Green Thumb aren't published (see [LICENSE.md](../LICENSE.md)).
 
-Notes about the **device's** LED board, useful for installation and for anyone documenting a different device:
+A couple of notes about the Plus+'s LED board:
 
-- The LED board's ribbon connector is a Molex 503566-1102 (0.3 mm, 11 circuits, bottom contact); the mating Molex cable is the 15031-04xx series. Noted for identification only — Green Thumb doesn't touch the ribbon.
+- The LED board's ribbon connector is a Molex 503566-1102 (0.3 mm pitch, 11 pins, bottom contact), and the matching Molex cable is the 15031-04xx series. That's just for reference, since Green Thumb doesn't touch the ribbon.
+- The blue and green control pads sit right next to each other on the Side B edge (blue is on the left when you're looking at Side B), so BLUE and GREEN are next to each other on the flex too.
 
 ## Flex pads
 
 | Pad | Goes to |
 |---|---|
-| GREEN | base node of the green LED driver |
-| BLUE | base node of the blue LED driver — must read 0 V in the pure-green state |
-| BTN | button line |
+| GREEN | the base of the green LED driver |
+| BLUE | the base of the blue LED driver |
+| BTN | the button line |
 | GND | ground |
-
-On the reference board the blue and green control pads are adjacent on the Side B edge (blue on the left as viewed from Side B), so GREEN and BLUE sit next to each other on the flex.

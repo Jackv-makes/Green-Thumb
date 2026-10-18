@@ -1,6 +1,6 @@
 <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 800 470" width="800" height="470" font-family="Helvetica, Arial, sans-serif">
 <rect width="800" height="470" fill="#ffffff"/>
-<text x="400" y="30" text-anchor="middle" font-size="18" font-weight="bold" fill="#222">Green Thumb — one-shot tap with blue inhibit</text>
+<text x="400" y="30" text-anchor="middle" font-size="18" font-weight="bold" fill="#222">Green Thumb: one shot tap with a blue check</text>
 <!-- GREEN -->
 <circle cx="50" cy="150" r="9" fill="none" stroke="#1D9E75" stroke-width="2.5"/>
 <text x="50" y="128" text-anchor="middle" font-size="13" fill="#1D9E75">GREEN</text>
@@ -56,7 +56,7 @@
 <text x="50" y="348" text-anchor="middle" font-size="11" fill="#666">blue driver base</text>
 <line x1="59" y1="320" x2="250" y2="320" stroke="#222" stroke-width="2"/><line x1="250" y1="320" x2="250" y2="300" stroke="#222" stroke-width="2"/><line x1="250" y1="300" x2="300" y2="300" stroke="#222" stroke-width="2"/>
 <rect x="300" y="250" width="160" height="110" rx="8" fill="#eef4fb" stroke="#378ADD" stroke-width="2"/>
-<text x="292" y="342" text-anchor="end" font-size="12" font-weight="bold" fill="#378ADD">Q2 digital transistor</text><text x="292" y="358" text-anchor="end" font-size="12" font-weight="bold" fill="#378ADD">(inhibit)</text>
+<text x="292" y="342" text-anchor="end" font-size="12" font-weight="bold" fill="#378ADD">Q2 digital transistor</text><text x="292" y="358" text-anchor="end" font-size="12" font-weight="bold" fill="#378ADD">(blue check)</text>
 <text x="304" y="290" font-size="11" fill="#222">1 IN</text>
 <line x1="300" y1="300" x2="316" y2="300" stroke="#222" stroke-width="2"/>
 <rect x="316" y="293" width="26" height="14" fill="none" stroke="#555" stroke-width="1.5"/>
