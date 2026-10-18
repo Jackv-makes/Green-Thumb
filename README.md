@@ -6,15 +6,16 @@
   <img src="images/green-thumb.png" alt="Green Thumb flex PCB, showing the BTN, GND, BLUE and GREEN pads" width="340">
 </p>
 
-This is a small flex PCB for the Pokémon GO Plus+ that presses the button for you when the green LED comes on. I wanted an auto-catch mod that taps the button instead of holding it down, and that doesn't get stuck in the white light loop like a lot of the other mods out there.
+This is a small flex PCB for the Pokémon GO Plus+ that presses the button for you when the green LED comes on. I wanted an auto catch mod that taps the button instead of holding it down, and that doesn't get stuck in the white light loop like a lot of the other mods out there.
 
 The flex sits on the LED board and solders to four points: GREEN, BLUE, BTN and GND. When green turns on by itself, it taps the button for about 100 ms. If blue is on too (white or cyan), it does nothing, so it can't get stuck on white. The rest of the time it just sits there and doesn't draw any real power.
 
-I went through a lot of the auto-catch mods people have shared before landing on this design, and I learned a ton from them along the way. See [Credit and Thanks](#credit-and-thanks) below.
+I went through a lot of the auto catch mods people have shared before landing on this design, and I learned a ton from them along the way. See [Credit and Thanks](#credit-and-thanks) below.
 
 # Features
 
 - Taps the button for about 100 ms when green comes on, instead of holding it down
+- Taps on yellow too, same as green
 - Ignores white and cyan, so it won't get stuck in the white light loop
 - Ignores red and blue on their own
 - Pressing the button yourself works exactly the same as before
@@ -40,10 +41,10 @@ The full breakdown is in [docs/how-it-works.md](docs/how-it-works.md).
 
 # The white light loop
 
-If you press the button while the Plus+ is disconnected, it searches for your phone, blinks white nine times, then stops. White is red, green and blue all on at once, so every one of those blinks also turns on green. A mod that only watches green presses the button on every blink, every press restarts the search, and you end up with white blinking forever.
+If you press the button while the Plus+ is disconnected, it searches for your phone, blinks white nine times, then stops. White is red, green and blue all on at once, so every one of those blinks also turns on green. A mod that only watches green presses the button on every blink, every press restarts the search, and you end up with white blinking until you put it to sleep, power cycle it, or connect it.
 
 <p align="center">
-  <img src="images/white-loop.svg" alt="The white light loop: a green-only mod versus Green Thumb" width="760">
+  <img src="images/white-loop.svg" alt="The white light loop: a green only mod versus Green Thumb" width="760">
 </p>
 
 I ran into this myself while building Green Thumb. Without the blue check, it looped. With its ground lifted, the Plus+ went back to nine blinks and stopped. Adding the blue check fixed it, since white has blue in it and the green catch state doesn't.
@@ -56,7 +57,7 @@ You'll see people say a diode or an optocoupler fixes it. On some units it seems
   <img src="images/timing.svg" alt="What the button line sees under each mod when green turns on" width="700">
 </p>
 
-Most of the other switchless mods hold the button down for as long as green is lit. That works, but if green stays on long enough the Plus+ can treat it as a long press, and most of them still loop on white. The single wire mod (with the LED left on the board) is the opposite: it holds the button down whenever green is *off*, which can get the Plus+ stuck and drains the battery. The vibration based mods only press while the motor is running, which cuts down on the white loop but stops working if you turn vibration off.
+Most of the other switchless mods hold the button down for as long as green is lit. That works, but if green stays on long enough the Plus+ can treat it as a long press, and most of them still loop on white. The single wire mod (with the LED left on the board) is the opposite: it holds the button down whenever green is *off*, which can get the Plus+ stuck and drains the battery. The vibration based mods only press while the motor is running, which cuts down on the white loop, but they can still press if white happens during a vibration and they won't work if the motor has been removed.
 
 Green Thumb taps instead of holding, and it ignores white.
 
