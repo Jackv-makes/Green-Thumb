@@ -18,6 +18,7 @@ I went through a lot of the auto catch mods people have shared before landing on
 - Taps on yellow too, same as green
 - Ignores white and cyan, so it won't get stuck in the white light loop
 - Ignores red and blue on their own
+- Pokémon Sleep works as intended from my tests
 - Pressing the button yourself works exactly the same as before
 - Draws next to nothing when idle, so no extra battery drain
 - Doesn't dim or change the LEDs
